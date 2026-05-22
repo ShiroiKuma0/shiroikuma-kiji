@@ -38,4 +38,7 @@
     <color name="dark_theme_search_bar_color">#C68600</color>
     <color name="black_theme_search_bar_color">#D4A017</color>
 
+    <!-- black/yellow recolor for system-drawn menus + settings -->
+    <color name="menu_pref_fg">#FFFF00</color>
+    <color name="menu_pref_bg">#000000</color>
 </resources>
