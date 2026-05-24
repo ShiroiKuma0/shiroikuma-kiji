@@ -131,6 +131,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(GetToolBarColorInt());
         }
         applyDisplayCutoutMode();
+        getWindow().setBackgroundDrawable( new ColorDrawable( Theme.GetChromeBgInt() ) );
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getWindow().setNavigationBarColor( Theme.GetChromeBgInt() );
         applyOrientation();
         Status().UpdateText();
     }
