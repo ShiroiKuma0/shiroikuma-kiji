@@ -48,3 +48,13 @@ cw.sh
 cw*.sh
 buffer.txt
 Temp
+
+# Claude Code — per-user settings (Claude Code creates these)
+.claude/settings.local.json
+.claude/*.local.json
+.claude/*.*~
+kxkb/*.*~
+
+# Claude Code — transient session files (if Claude Code ever drops them in-tree)
+.claude/sessions/
+.claude/.cache/
