@@ -119,7 +119,7 @@ public class MenuItem {
 //                view.setTextAlignment( View.TEXT_ALIGNMENT_CENTER );
             builder.setCustomTitle( createDialogTitleView(title, context, loadTitleAction) );
         }
-        builder.show();
+        Theme.TintDialog( builder.show() );
     }
 
     public interface LoadTitleInterface {

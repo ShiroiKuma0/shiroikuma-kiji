@@ -421,6 +421,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         dialog.show();
+        Theme.TintDialog( dialog );
     }
 
 
@@ -1135,12 +1136,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 .setNegativeButton( android.R.string.cancel, null )
                 .create();
         dlg.show();
-        if ( dlg.getWindow() != null )
-            dlg.getWindow().setBackgroundDrawable( new android.graphics.drawable.ColorDrawable( bg ) );
-        if ( dlg.getListView() != null )
-            dlg.getListView().setBackgroundColor( bg );
-        android.widget.Button cancelBtn = dlg.getButton( AlertDialog.BUTTON_NEGATIVE );
-        if ( cancelBtn != null ) cancelBtn.setTextColor( fg );
+        Theme.TintDialog( dlg );
     }
 
     private void ApplyOldAndReadArticleList() {
@@ -1364,11 +1360,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
 
     private void unstarArticles() {
-        new AlertDialog.Builder(getContext())
+        Theme.TintDialog( new AlertDialog.Builder(getContext())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle( R.string.question )
                 .setMessage( R.string.unstarAllArtcilesComfirm)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> new AlertDialog.Builder(getContext())
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> Theme.TintDialog( new AlertDialog.Builder(getContext())
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle(R.string.question)
                         .setMessage(R.string.unstarAllArtcilesComfirm2)
@@ -1377,11 +1373,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                             public void run() {
                                 unstarAllFeedEntries();
                             }
-                        }.start()).setNegativeButton(android.R.string.cancel, null).show()).setNegativeButton(android.R.string.cancel, null).show();
+                        }.start()).setNegativeButton(android.R.string.cancel, null).show() )).setNegativeButton(android.R.string.cancel, null).show() );
     }
 
     private void resetFeedAndDeleteAllArticles() {
-        new AlertDialog.Builder(getContext()) //
+        Theme.TintDialog( new AlertDialog.Builder(getContext()) //
                 .setIcon(android.R.drawable.ic_dialog_alert) //
                 .setTitle( R.string.question ) //
                 .setMessage( R.string.deleteAllEntries ) //
@@ -1401,7 +1397,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         }
                         UiUtils.RunOnGuiThread(() -> mEntriesCursorAdapter.notifyDataSetChanged());
                     }
-                }.start()).setNegativeButton(android.R.string.no, null).show();
+                }.start()).setNegativeButton(android.R.string.no, null).show() );
     }
 
     @SuppressLint("Range")

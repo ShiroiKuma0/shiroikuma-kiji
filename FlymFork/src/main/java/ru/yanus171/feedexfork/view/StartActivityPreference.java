@@ -74,7 +74,7 @@ public class StartActivityPreference extends Preference {
 		}
 	}
 	private void SelectAllFeedsForAutoRefresh() {
-		Theme.CreateDialog( getContext() )
+		Theme.TintDialog( Theme.CreateDialog( getContext() )
 			.setMessage( getContext().getString( R.string.refresh_only_selected_select_all_summary ) + " ?" )
 			.setTitle( R.string.question )
 			.setPositiveButton( android.R.string.yes, (dialogInterface, i) -> {
@@ -85,11 +85,11 @@ public class StartActivityPreference extends Preference {
 				UiUtils.toast(  String.format( "%d %s", affected, getContext().getString( R.string.feed_count_were_edited) ) );
 			})
 			.setNegativeButton( android.R.string.no, null )
-			.create().show();
+			.show() );
 	}
 
 	private void SelectNoneFeedsForAutoRefresh() {
-		Theme.CreateDialog( getContext() )
+		Theme.TintDialog( Theme.CreateDialog( getContext() )
 			.setMessage( getContext().getString( R.string.refresh_only_selected_select_none_summary ) + " ?" )
 			.setTitle( R.string.question )
 			.setPositiveButton( android.R.string.yes, (dialogInterface, i) -> {
@@ -100,6 +100,6 @@ public class StartActivityPreference extends Preference {
 				UiUtils.toast( String.format( "%d %s", affected, getContext().getString( R.string.feed_count_were_edited) ) );
 			})
 			.setNegativeButton( android.R.string.no, null )
-			.create().show();
+			.show() );
 	}
 }
