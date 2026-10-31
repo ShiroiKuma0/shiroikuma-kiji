@@ -5,14 +5,15 @@ A personal, rebranded Android RSS reader — a fork of
 [Flym](https://github.com/FredJul/Flym)). It installs **side-by-side** with the official app
 (`shiroikuma.handyrss`), with its own icon and name, fully signed for self-install.
 
-**Latest release:** [`1.1.6+012`](../../releases/latest) · arm64 (universal) · Android 4.0+ · F-Droid flavor (no GMS).
+**Latest release:** [`1.1.6+014`](../../releases/latest) · arm64 (universal) · Android 4.0+ · F-Droid flavor (no GMS).
 
 ## What this fork adds on top of Handy News Reader
 
 - **Side-by-side install** — its own package id, content-provider authorities, launcher icon, and name,
   so it coexists with the official Handy News Reader and never collides on updates.
 - **Grid & card article layout** — switch between classic list rows and an image-top card grid with
-  uniform card heights; tune columns, title-line count, and image height live from the top bar.
+  uniform card heights; tune columns, title-line count, and image height live from one grid dialog —
+  kept separately for the folded, semi-folded and unfolded screen of a foldable.
 - **The list stays where you left it** — open an article from the middle of the grid with 「Show read
   articles」 off and it leaves the list on the way back; the articles above it do not move a pixel.
   Stock restores only the row, flush to the top of the screen, throwing away the part-scrolled
@@ -67,7 +68,7 @@ A personal, rebranded Android RSS reader — a fork of
 - **Scheduled auto-backup** — periodic full backup (feeds, starred articles, filters, labels, settings)
   to a folder of your choice, on a configurable interval.
 - **Quick-control toolbars** — adjust text size, title size, and body font in the reading view, or
-  columns / title lines / image size in the grid, on the fly; star/unstar an article with one tap from
+  the whole grid layout from one dialog, on the fly; star/unstar an article with one tap from
   the always-visible ★ in the reading toolbar.
 - **Paywall bypass for Mafra sites** — articles from lidovky.cz and idnes.cz load their full text past
   the pay-or-consent wall (fetched with a Googlebot user agent).
