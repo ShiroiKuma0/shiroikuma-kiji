@@ -66,7 +66,7 @@ is nothing to do — STOP.
 | Origin remote | `origin` → `git@github.com:ShiroiKuma0/shiroikuma-handyrss.git` (SSH, push) |
 | Mirror branch | `master` — fast-forward only, never carries our changes |
 | Customization branch | `custom` — a **stack** of feature commits on top of the rebrand, rebased onto each release tag |
-| Current base (as of this skill's writing) | the `v1.1.6` tag @ `8ed995eb` (2026-08-16), versionName base `1.1.6`, versionCode base `3410000` (= upstream `341` × 10000) — the tag *is* the `upstream/master` tip, so tag and master agree |
+| Current base (as of this skill's writing) | untagged `upstream/master` @ `3611801b` (2026-10-12), versionName base `1.1.35`, versionCode base `3720000` (= upstream `372` × 10000) — the latest tag `v1.1.6` is behind it |
 | Counter (external) | `$HOME/.handyrss_build_no` — outside the repo; **reset to 0 whenever the adopted base version changes** (new tag OR untagged master bump) so the first build on the new base is `+1`; on a **same-version refresh** it is left as-is and `+N` keeps growing |
 | App module | `FlymFork` |
 | Build task (delegated) | `handy-rss-build` → `:FlymFork:assembleFdroidRelease` |

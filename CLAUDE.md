@@ -9,19 +9,23 @@ Before any change on this repo, read **`.claude/skills/handy-rss-build/SKILL.md`
 ## At-a-glance conventions (full detail in the skill)
 
 - **Branch model:** all changes on the **`custom`** branch. `master` mirrors `upstream/master` (yanus171) fast-forward only and never carries our changes. `origin` is `git@github.com:ShiroiKuma0/shiroikuma-handyrss.git` (SSH push).
-- **Versioning:** `versionName = 1.1.6+NNN` (**`N` zero-padded to three digits**), `versionCode = 3410000+N` (plain integer). **Every build bumps N**, no exceptions. The counter lives at `$HOME/.handyrss_build_no` — outside the repo, never tracked. It resets to 0 whenever the adopted upstream base version changes.
+- **Versioning:** `versionName = 1.1.35+NNN` (**`N` zero-padded to three digits**), `versionCode = 3720000+N` (plain integer). **Every build bumps N**, no exceptions. The counter lives at `$HOME/.handyrss_build_no` — outside the repo, never tracked. It resets to 0 whenever the adopted upstream base version changes.
 - **Upstream tracking:** **always rebase to the latest untagged version** (白い熊's standing rule, 2026-07-25) — if `upstream/master` carries a newer `versionName` than ours, adopt it even though no release tag exists. Never wait for the tag.
 - **Reset before applying patches:** `git reset --hard HEAD`, **not** `git checkout -- .`. The latter restores from the index, so a dirty index from an aborted prior push restores an already-patched tree and the next `git apply` fails. `git status --short` should be empty after the reset.
 - **Build-test-confirm-push:** changes are tested on the Mate XT before being committed. Once a stage's scope is confirmed, **build automatically** (no per-build "shall I build?" prompt — see the auto-build auto-memory); the build step bumps the counter, builds the APK, copies it to `~/tmp/`, and **auto-delivers via the global `/after-build` skill** (`/adb-check` UNSANDBOXED → `/adb-push` to `/sdcard/tmp/` if a phone is connected, else `/scp` to `skhw:~/tmp/`). Still show the diff before building, and **commit + push only after the user confirms on-device** with "Push" / "good" / "confirmed".
 
 ## External state — outside this repo, must be preserved across sessions
 
-- **`$HOME/.handyrss_build_no`** — the build counter. **Currently `14`** (reset to 0 when the base moved `1.1.5` → `1.1.6` on the 2026-08-17 `v1.1.6` rebase; `+008` = the 2026-09-11 restore-merge fix, `+010`–`+011` = the entry-list scroll-position fixes, `+012` = the reading-view horizontal-swipe fix; `+013`–`+014` = the per-fold-state grid-layout dialog + the mark-all-read list-reload fix; the previous base's last build was `1.1.5+9`). Never commit.
+- **`$HOME/.handyrss_build_no`** — the build counter. **Currently `1`** (reset to 0 when the base moved `1.1.6` → `1.1.35` on the 2026-10-31 master-tip rebase; the previous base's last build was `1.1.6+014`). Never commit.
 - **`~/.android-keystores/handyrss-custom.jks`** — signing keystore (alias `handyrss`). Without it, builds cannot be signed.
 - **`~/tmp/`** — APK archive directory. Never committed; persists across sessions.
 - **`~/git/shiroikuma-handyrss`** — the local working clone (this repo).
 
-## State checkpoint (2026-08-17)
+## State checkpoint (2026-10-31)
+
+- **Rebased onto untagged `upstream/master` @ `3611801b`** (2026-10-31) — upstream moved `341`/`1.1.6` → `372`/`1.1.35` without a tag; base literals moved to `1.1.35`/`3720000`, counter reset; the 88-commit stack replayed whole. Shipped **`1.1.35+001`**. Conflict notes in the skill's feature commit 47 (shared OkHttp client vs our consent-wall UA; search extracted to `EntriesSearch`).
+
+Older notes from the 2026-08-17 checkpoint:
 
 - **Rebased onto the `v1.1.6` release** (2026-08-17) — base moved `1.1.5`/`3400000` → `1.1.6`/`3410000`, counter reset to `0`. Shipped **`1.1.6+003`** (`+001` built before the duplicate-`WAKE_LOCK` dedup, `+002` before the build number was zero-padded). Previous base's last built + pushed version was `1.1.5+9` (`+6` export completeness, `+7` `CANCEL_EXPORT`, `+8` the ghost sweep, `+9` progress `item`/heartbeat/bytes + the export moved into a foreground service).
 - **The export artefact is now a ZIP, not an OPML** (commit 40) — `shiroikuma-handyrss_<ts>.zip`. Import still accepts old plain-OPML backups. Since commit 41 it also carries `articles.backup`, `html/`, `images/` and `fonts/` — **nine categories, all defaulting `on`** — and is written as `.part` + rename.
