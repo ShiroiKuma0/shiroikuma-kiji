@@ -158,6 +158,7 @@ import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
+import ru.yanus171.feedexfork.utils.GridLayoutPrefs;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -214,13 +215,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     HashMap<Long, Integer> mItemPositionVoc = new HashMap<>();
     HashMap<Integer, Long> mItemIDVoc = new HashMap<>();
     private boolean mGridMode = PrefUtils.getBoolean("list_layout_grid", true);
-    private int mGridTitleLines = PrefUtils.getIntFromText("list_grid_title_lines", 3);
-    private int mGridImageHeight = PrefUtils.getIntFromText("list_grid_image_height", 100);
+    private int mGridTitleLines = GridLayoutPrefs.get(GridLayoutPrefs.TITLE_LINES, 3);
+    private int mGridImageHeight = GridLayoutPrefs.get(GridLayoutPrefs.IMAGE_HEIGHT, 100);
 
     public void RefreshGridSettings() {
         mGridMode = PrefUtils.getBoolean("list_layout_grid", true);
-        mGridTitleLines = PrefUtils.getIntFromText("list_grid_title_lines", 3);
-        mGridImageHeight = PrefUtils.getIntFromText("list_grid_image_height", 100);
+        mGridTitleLines = GridLayoutPrefs.get(GridLayoutPrefs.TITLE_LINES, 3);
+        mGridImageHeight = GridLayoutPrefs.get(GridLayoutPrefs.IMAGE_HEIGHT, 100);
     }
 
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryTextFromFeedSetup, boolean showUnread, EntriesListFragment entriesListFragment) {

@@ -145,6 +145,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
+import ru.yanus171.feedexfork.utils.GridLayoutPrefs;
 import ru.yanus171.feedexfork.utils.Label;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -265,6 +266,13 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, true );
         mImageDownloadObservable.addObserver(this);
         mIsResumed = true;
+        ApplyGridSettingsIfFoldChanged();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull android.content.res.Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        ApplyGridSettingsIfFoldChanged();
     }
 
     @Override
@@ -531,9 +539,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         menu.findItem( R.id.menu_show_article_text_preview_toggle ).setEnabled( !mShowTextInEntryList );
         menu.findItem( R.id.menu_show_article_big_image_toggle ).setEnabled( !mShowTextInEntryList && PrefUtils.IsShowArticleBigImagesEnabled( mCurrentUri ) );
         boolean gridModeMenu = PrefUtils.getBoolean( "list_layout_grid", true );
-        if ( menu.findItem( R.id.menu_grid_columns ) != null ) menu.findItem( R.id.menu_grid_columns ).setVisible( gridModeMenu );
-        if ( menu.findItem( R.id.menu_grid_title_lines ) != null ) menu.findItem( R.id.menu_grid_title_lines ).setVisible( gridModeMenu );
-        if ( menu.findItem( R.id.menu_grid_image_height ) != null ) menu.findItem( R.id.menu_grid_image_height ).setVisible( gridModeMenu );
+        if ( menu.findItem( R.id.menu_grid_layout ) != null ) menu.findItem( R.id.menu_grid_layout ).setVisible( gridModeMenu );
         if ( menu.findItem( R.id.menu_grid_title_font ) != null ) menu.findItem( R.id.menu_grid_title_font ).setVisible( gridModeMenu );
 
     }
@@ -541,16 +547,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_grid_columns: {
-                ShowGridSliderDialog( "list_grid_columns", R.string.settings_list_grid_columns, 4, 1, 8 );
-                return true;
-            }
-            case R.id.menu_grid_title_lines: {
-                ShowGridSliderDialog( "list_grid_title_lines", R.string.settings_list_grid_title_lines, 3, 1, 12 );
-                return true;
-            }
-            case R.id.menu_grid_image_height: {
-                ShowGridSliderDialog( "list_grid_image_height", R.string.settings_list_grid_image_height, 100, 40, 400 );
+            case R.id.menu_grid_layout: {
+                ShowGridLayoutDialog();
                 return true;
             }
             case R.id.menu_grid_title_font: {
@@ -1153,16 +1151,28 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private void SetListViewAdapter() {
         if (mListView instanceof android.widget.GridView) {
             boolean gridMode = PrefUtils.getBoolean("list_layout_grid", true);
-            int gridCols = PrefUtils.getIntFromText("list_grid_columns", 4);
+            int gridCols = GridLayoutPrefs.get( GridLayoutPrefs.COLUMNS, 4 );
             ((android.widget.GridView) mListView).setNumColumns( gridMode ? Math.max(1, gridCols) : 1 );
         }
+        mGridFoldState = GridLayoutPrefs.foldState();
         mListView.setAdapter(mEntriesCursorAdapter);
         mNeedSetSelection = true;
     }
 
+    // The fold state the grid was last laid out for; null until the adapter is set.
+    private String mGridFoldState = null;
+
+    private void ApplyGridSettingsIfFoldChanged() {
+        if ( mGridFoldState == null || mListView == null || !PrefUtils.getBoolean( "list_layout_grid", true ) )
+            return;
+        if ( !mGridFoldState.equals( GridLayoutPrefs.foldState() ) )
+            ApplyGridSettingsLive();
+    }
+
     private void ApplyGridSettingsLive() {
+        mGridFoldState = GridLayoutPrefs.foldState();
         if (mListView instanceof android.widget.GridView) {
-            int gridCols = PrefUtils.getIntFromText("list_grid_columns", 4);
+            int gridCols = GridLayoutPrefs.get( GridLayoutPrefs.COLUMNS, 4 );
             ((android.widget.GridView) mListView).setNumColumns( Math.max(1, gridCols) );
         }
         if (mEntriesCursorAdapter != null) {
@@ -1171,39 +1181,60 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         }
     }
 
-    private void ShowGridSliderDialog(final String prefKey, int titleResId, int defVal, final int min, final int max) {
+    // One dialog for the whole grid layout, live, for the fold state the phone is in now.
+    private void ShowGridLayoutDialog() {
         final Context ctx = getActivity();
-        int cur = Math.max( min, Math.min( max, PrefUtils.getIntFromText( prefKey, defVal ) ) );
+        final String state = GridLayoutPrefs.foldState();
         LinearLayout root = new LinearLayout( ctx );
         root.setOrientation( LinearLayout.VERTICAL );
         int pad = UiUtils.dpToPixel( 20 );
-        root.setPadding( pad, pad, pad, pad );
+        root.setPadding( pad, UiUtils.dpToPixel( 8 ), pad, pad );
+        AddGridLayoutSlider( root, state, GridLayoutPrefs.COLUMNS, R.string.grid_layout_columns, 4, 1, 8 );
+        AddGridLayoutSlider( root, state, GridLayoutPrefs.TITLE_LINES, R.string.grid_layout_title_lines, 3, 1, 12 );
+        AddGridLayoutSlider( root, state, GridLayoutPrefs.IMAGE_HEIGHT, R.string.grid_layout_image_height, 100, 40, 400 );
+        AlertDialog dlg = new AlertDialog.Builder( ctx )
+                .setTitle( getString( R.string.grid_layout_dialog_title, getString( GridLayoutPrefs.foldStateLabel( state ) ) ) )
+                .setView( root )
+                .setPositiveButton( android.R.string.ok, null )
+                .create();
+        dlg.show();
+        Theme.TintDialog( dlg );
+    }
+
+    private void AddGridLayoutSlider(LinearLayout root, final String state, final String prefKey, int labelResId, int defVal, final int min, final int max) {
+        final Context ctx = root.getContext();
+        int cur = Math.max( min, Math.min( max, GridLayoutPrefs.get( prefKey, state, defVal ) ) );
+        LinearLayout line = new LinearLayout( ctx );
+        line.setOrientation( LinearLayout.HORIZONTAL );
+        line.setPadding( 0, UiUtils.dpToPixel( 12 ), 0, 0 );
+        TextView labelView = new TextView( ctx );
+        labelView.setTextColor( Theme.GetChromeFgInt() );
+        labelView.setAlpha( 0.8f );
+        labelView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 16 );
+        labelView.setText( labelResId );
+        line.addView( labelView, new LinearLayout.LayoutParams( 0, ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
         final TextView valueView = new TextView( ctx );
         valueView.setTextColor( Theme.GetChromeFgInt() );
-        valueView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 22 );
+        valueView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 20 );
         valueView.setText( String.valueOf( cur ) );
-        root.addView( valueView );
+        line.addView( valueView );
+        root.addView( line );
         final SeekBar bar = new SeekBar( ctx );
         bar.setMax( max - min );
         bar.setProgress( cur - min );
         root.addView( bar );
         bar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
             @Override public void onProgressChanged(SeekBar s, int progress, boolean fromUser) {
+                if ( !fromUser )
+                    return;
                 int v = min + progress;
                 valueView.setText( String.valueOf( v ) );
-                PrefUtils.putString( prefKey, String.valueOf( v ) );
+                GridLayoutPrefs.put( prefKey, state, v );
                 ApplyGridSettingsLive();
             }
             @Override public void onStartTrackingTouch(SeekBar s) {}
             @Override public void onStopTrackingTouch(SeekBar s) {}
         } );
-        AlertDialog dlg = new AlertDialog.Builder( ctx )
-                .setTitle( titleResId )
-                .setView( root )
-                .setPositiveButton( android.R.string.ok, null )
-                .create();
-        dlg.show();
-        Theme.TintDialog( dlg );
     }
 
     private void ShowTitleFontPickerDialog() {
