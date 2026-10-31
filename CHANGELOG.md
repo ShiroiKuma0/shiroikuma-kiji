@@ -9,6 +9,22 @@ Each fork release names the upstream release it is built on. The build counter i
 
 ---
 
+## 白い熊 Handy RSS 1.1.35+002 — 2026-10-31
+
+Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
+
+### Fixes & behavior
+
+- **Memory leak on fold and unfold fixed.** The article list’s status bar subscribed to the app-wide
+  refresh-status updates and never unsubscribed. It held on to the list’s views, so every time the
+  main screen was rebuilt the old one stayed in memory for good. On the Mate XT every fold or unfold
+  rebuilds the screen, so after 47 days of uptime the app was holding 69 copies of it and 1.1 GB of
+  memory while idle. The status bar now unsubscribes when its view is destroyed. Measured on the
+  phone: after 20 forced rebuilds the app holds 3 screens instead of one more per rebuild, and about
+  87 MB.
+
+---
+
 ## 白い熊 Handy RSS 1.1.35+001 — 2026-10-31
 
 Built on upstream **`1.1.35`** (versionCode 372) — the untagged `upstream/master` tip `3611801b`
