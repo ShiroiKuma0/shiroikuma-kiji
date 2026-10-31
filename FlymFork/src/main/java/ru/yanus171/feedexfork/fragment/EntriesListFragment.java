@@ -282,6 +282,19 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         super.onPause();
     }
 
+    // The StatusText subscribes to the process-wide static FetcherService.Status()
+    // observable and holds this view tree's TextViews. Without unsubscribing, every
+    // recreated HomeActivity (each fold/unfold of the Mate XT is a config change the
+    // manifest does not handle) stayed reachable from that static forever.
+    @Override
+    public void onDestroyView() {
+        if ( mStatusText != null ) {
+            Status().deleteObserver( mStatusText );
+            mStatusText = null;
+        }
+        super.onDestroyView();
+    }
+
     @NotNull
     public String GetWhereSQL() {
         String labelSQL = "";
@@ -744,7 +757,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         UpdateHeader();
         UpdateActions();
-        mStatusText.SetFeedID( mCurrentUri );
+        if ( mStatusText != null )
+            mStatusText.SetFeedID( mCurrentUri );
         timer.End();
     }
 
