@@ -1384,6 +1384,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             mEntryIdsToCancel.clear();
         }
         if (mEntriesCursorAdapter != null) {
+            // The provider skips its change notifications while any other job (auto-refresh, the
+            // full-text download, a silent mark-as-read) holds SetNotifyEnabled(false), and then this
+            // list never reloads although the rows are updated. So notify the list's own URI directly.
+            final Uri listUri = mCurrentUri;
             Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), read ? R.string.marked_as_read : R.string.marked_as_unread, Snackbar.LENGTH_LONG)
                     .setAction(R.string.undo, v -> new Thread() {
                         @Override
@@ -1394,6 +1398,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                 where = _ID + " IN (" + TextUtils.join(",", mEntryIdsToCancel) + ')';
                             }
                             cr.update(EntryColumns.CONTENT_URI, FeedData.getUnreadContentValues(), where, null);
+                            if ( listUri != null )
+                                cr.notifyChange( listUri, null );
                         }
                     }.start());
             snackbar.getView().setBackgroundResource(R.color.material_grey_900);
@@ -1404,8 +1410,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 public void run() {
                     final String where =  (read ? WHERE_UNREAD : WHERE_READ ) + DB_AND + GetWhereSQL();
                     ContentResolver cr = MainApplication.getContext().getContentResolver();
-                    Cursor cursor = cr.query(mCurrentUri, new String[]{_ID}, where, null, null);
-                    if ( mCurrentUri != null && Constants.NOTIF_MGR != null  ) {
+                    Cursor cursor = cr.query(listUri, new String[]{_ID}, where, null, null);
+                    if ( listUri != null && Constants.NOTIF_MGR != null  ) {
                         Constants.NOTIF_MGR.cancel( Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT );
                         Constants.NOTIF_MGR.cancel( Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED );
                         if ( cursor.moveToFirst() )
@@ -1416,8 +1422,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                 Constants.NOTIF_MGR.cancel( cursor.getInt(0) );
                             } while ( cursor.moveToNext());
                     }
-                    cr.update(mCurrentUri, read ? FeedData.getReadContentValues() : FeedData.getUnreadContentValues(), where , null);
+                    cr.update(listUri, read ? FeedData.getReadContentValues() : FeedData.getUnreadContentValues(), where , null);
                     TakeMarkAsReadList( true );
+                    if ( listUri != null )
+                        cr.notifyChange( listUri, null );
                 }
             }.start();
         }
