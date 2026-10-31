@@ -9,6 +9,46 @@ Each fork release names the upstream release it is built on. The build counter i
 
 ---
 
+## 白い熊 Handy RSS 1.1.35+001 — 2026-10-31
+
+Built on upstream **`1.1.35`** (versionCode 372) — the untagged `upstream/master` tip `3611801b`
+(2026-10-12). Upstream moved from `1.1.6` to `1.1.35` on master without tagging a release; per this
+fork's rule of always following the latest untagged version, the base is adopted and the build counter
+starts again at `+001`. All fork features carry over unchanged.
+
+### New from upstream
+
+- **One shared HTTP connection for all feeds** (new Advanced setting, on by default) — a bounded
+  connection pool replaces a new client per request, which leaked sockets and could crash long refresh
+  cycles on EMUI.
+- **Refreshes no longer stall** — each feed's fetch is capped at 30 seconds instead of a whole refresh
+  pass waiting silently on one stuck feed; fewer screen updates while many feeds refresh; the long-
+  operation wakelock is renewed during long refreshes and a hit traffic limit is reported in a
+  notification.
+- **Steadier read state and unread counts** — a swipe to unread survives list refreshes, and the
+  per-feed unread counts are recounted from the database without racing an in-flight swipe.
+- **Article view** — images load properly when an article opens; an open article reloads when its
+  content changed underneath it; the first article opened is now marked read.
+- **Draw around the camera cutout** (new Advanced setting).
+- **Article-list search** moved into its own class, and the action bar turns a search colour while you
+  search.
+- **“Send report to developer”** in the ⋮ menu (emails upstream's developer a report file, including
+  the feeds that failed to update); crash reports carry the stacktrace in the mail body.
+- **Crash fixes** — 「Couldn't read row from CursorWindow」 during auto-refresh, the full-text download
+  on a broken cursor, notifications on Android 8 (EMUI), a missing search box, and links no app can
+  open; errors while downloading images no longer stop the download.
+- The feed-filter edit dialog scrolls; the landscape control panel has a reload button; brightness
+  gestures change brightness exponentially.
+
+### Fork work carried across
+
+- The Mafra paywall bypass (Googlebot user agent for lidovky.cz, idnes.cz, expres.cz and
+  antiyoutuber.cz) now rides on upstream's shared HTTP connection.
+- The black window and navigation-bar background sits beside upstream's cutout handling; crash
+  messages keep the fork's styled toast.
+
+---
+
 ## 白い熊 Handy RSS 1.1.6+014 — 2026-10-31
 
 Built on upstream **`v1.1.6`** (versionCode 341) — same upstream base as `1.1.6+012`, so everything
