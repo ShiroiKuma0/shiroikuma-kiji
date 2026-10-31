@@ -742,6 +742,14 @@
     <string name="settings_list_grid_title_lines">Grid: title lines</string>
     <string name="settings_list_grid_image_height">Grid: image height (dp)</string>
     <string name="settings_grid_title_font">Article title font</string>
+    <string name="grid_layout_menu">Grid layout</string>
+    <string name="grid_layout_dialog_title">Grid layout — %1$s</string>
+    <string name="grid_layout_columns">Articles per row</string>
+    <string name="grid_layout_title_lines">Title lines</string>
+    <string name="grid_layout_image_height">Image height (dp)</string>
+    <string name="fold_state_folded">folded</string>
+    <string name="fold_state_semi">semi-folded</string>
+    <string name="fold_state_unfolded">unfolded</string>
     <string name="settings_read_text_size">Article text size</string>
     <string name="settings_read_title_size">Article title size</string>
     <string name="settings_read_text_font">Article text font</string>
