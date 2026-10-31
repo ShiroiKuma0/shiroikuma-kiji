@@ -9,6 +9,43 @@ Each fork release names the upstream release it is built on. The build counter i
 
 ---
 
+## 白い熊 Handy RSS 1.1.6+014 — 2026-10-31
+
+Built on upstream **`v1.1.6`** (versionCode 341) — same upstream base as `1.1.6+012`, so everything
+here is fork work. (`1.1.6+013` was a test build of the grid dialog alone and is not released.)
+
+### One grid-layout dialog, with a layout per fold state
+
+The three grid icons in the article-list top bar — columns, title lines, image height — are now
+**one grid icon** opening **one dialog with all three sliders**: articles per row (1–8), title lines
+(1–12) and image height (40–400 dp). Every slider applies to the grid live while you drag it.
+
+The layout is kept **separately for each fold state** of a foldable — **folded**, **semi-folded** and
+**unfolded** — so each screen can have its own number of columns and card size. The dialog's title
+names the state being edited (「Grid layout — semi-folded」). The state is read from the aspect ratio
+of the physical panel (Huawei Mate XT: about 2.2 : 1 folded, 1.1 : 1 semi-folded, 1.4 : 1 unfolded),
+which does not change with the orientation; an ordinary phone counts as folded, a tablet as unfolded.
+Folding or unfolding the phone, or coming back to the list in a different state, switches the grid to
+that state's layout.
+
+A state never adjusted uses the previous single layout, so nothing changes until you tune it. The
+three typed-number fields for these values in Settings → Article list are gone — the dialog is the one
+place to set them. The title-font picker stays its own icon, one font for all states.
+
+### Mark all as read always clears the list
+
+With 「Show read articles」 off, the mark-all-read button (bottom right) sometimes left every card on
+screen; only after going back did the drawer's unread count drop, and only reopening the group showed
+it empty. The articles *were* marked read — but the app's content provider suppresses its change
+notifications globally while any background job is running (the scheduled auto-refresh, the full-text
+download, the silent mark-as-read on scroll), so a tap during one of them never told the list to
+reload. The drawer count followed only because it uses a separate flag.
+
+The mark — and its Undo — now notify the article list directly, so the list empties (or refills) at
+once whatever is running in the background.
+
+---
+
 ## 白い熊 Handy RSS 1.1.6+012 — 2026-10-17
 
 Built on upstream **`v1.1.6`** (versionCode 341) — same upstream base as `1.1.6+011`, so everything
