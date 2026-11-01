@@ -1,22 +1,22 @@
 ---
 name: upstream-new-version
-description: Check yanus171/Handy-News-Reader for new upstream work and pull it into our fork by rebasing the whole `custom` feature stack — onto the new release tag when there is one (adopting upstream's version and resetting the build counter), or, when there is no new tag but upstream/master has advanced, onto the latest master tip (keeping our version base unchanged so our +N numbering keeps growing). Before every rebase it shows a descriptive table of the new upstream functionality since our last base and waits for an OK. It fast-forwards the `master` mirror, backs up `custom`, reconciles conflicts — automatically when small, stopping to discuss and plan when significant — then builds the APK via the handy-rss-build skill and delivers it automatically via the global /after-build skill (no transfer prompt); the force-push waits for on-device confirmation. Use this skill when the user runs /upstream-new-version, or asks to pull/update to new Handy News Reader (Handy-News-Reader / handyrss / FlymFork / feedexfork) upstream work, rebase onto a new release or the latest master, or "check upstream for a new version". This is the upstream-update front-end for the handy-rss-build fork; it delegates the actual build to handy-rss-build.
+description: Check yanus171/Handy-News-Reader for new upstream work and pull it into our fork by rebasing the whole `custom` feature stack — onto the new release tag when there is one (adopting upstream's version and resetting the build counter), or, when there is no new tag but upstream/master has advanced, onto the latest master tip (keeping our version base unchanged so our +N numbering keeps growing). Before every rebase it shows a descriptive table of the new upstream functionality since our last base and waits for an OK. It fast-forwards the `master` mirror, backs up `custom`, reconciles conflicts — automatically when small, stopping to discuss and plan when significant — then builds the APK via the kiji-build skill and delivers it automatically via the global /after-build skill (no transfer prompt); the force-push waits for on-device confirmation. Use this skill when the user runs /upstream-new-version, or asks to pull/update to new Handy News Reader (Handy-News-Reader / handyrss / FlymFork / feedexfork) upstream work, rebase onto a new release or the latest master, or "check upstream for a new version". This is the upstream-update front-end for the kiji-build fork; it delegates the actual build to kiji-build.
 ---
 
-Base directory for this skill: /home/shiroikuma/git/shiroikuma-handyrss/.claude/skills/upstream-new-version
+Base directory for this skill: /home/shiroikuma/git/shiroikuma-kiji/.claude/skills/upstream-new-version
 
-# Handy RSS — upstream new-version rebase + rebuild
+# 白い熊 記事 — upstream new-version rebase + rebuild
 
 This skill automates the **"new upstream work landed, pull it into our fork"** flow for the
-user's rebranded Handy News Reader fork (`shiroikuma.handyrss` / `白い熊 Handy RSS`) — whether that work
+user's rebranded Handy News Reader fork (`shiroikuma.kiji` / `白い熊 記事`) — whether that work
 is a new release tag or just fresh commits on `upstream/master` (see **Two update modes**). It is the
-front-end to the **`handy-rss-build`** skill: it does the git work (detect new upstream work → mirror →
-rebase the `custom` stack → reconcile) and then hands the **build** off to `handy-rss-build`.
+front-end to the **`kiji-build`** skill: it does the git work (detect new upstream work → mirror →
+rebase the `custom` stack → reconcile) and then hands the **build** off to `kiji-build`.
 
-**READ the `handy-rss-build` skill first** (`.claude/skills/handy-rss-build/SKILL.md`) — it is the
+**READ the `kiji-build` skill first** (`.claude/skills/kiji-build/SKILL.md`) — it is the
 authoritative source for the fork's identity, the 5 rebrand edits, the feature-commit stack, the
 versioning scheme, the build commands + NOISE regex, and the build/phone/push gates. This skill does
-not duplicate those; it references them. Where the two ever disagree, `handy-rss-build` wins for
+not duplicate those; it references them. Where the two ever disagree, `kiji-build` wins for
 build mechanics and this skill wins for the rebase flow.
 
 ## What this skill does (and does not do)
@@ -25,12 +25,12 @@ Does: fetch upstream → decide what to rebase onto (see **Two update modes** be
 descriptive table of the new upstream functionality since our last base and wait for an OK** →
 fast-forward `master`, back up `custom`, rebase the whole `custom` feature stack onto the target,
 reconcile conflicts (auto if small, **discuss-and-plan with the user if significant**), handle the
-version/counter per the mode, verify the rebrand + features survived, then build via `handy-rss-build`.
+version/counter per the mode, verify the rebrand + features survived, then build via `kiji-build`.
 
 Does NOT: force-push `custom` or commit the doc/version updates without telling you. The build IS
 delivered to the phone automatically (via the global `/after-build` skill — no transfer prompt), but
 the force-push happens only **after the user has tested the new build on-device and confirmed** — same
-build-test-confirm-push discipline as `handy-rss-build` (see its Hard rules; the git-push hold applies
+build-test-confirm-push discipline as `kiji-build` (see its Hard rules; the git-push hold applies
 here too).
 
 ## Two update modes
@@ -58,18 +58,18 @@ even-newer untagged commits beyond it — those wait for their own release). Onl
 do we target the master tip. If there is neither a new tag nor any master advance past our base, there
 is nothing to do — STOP.
 
-## Key facts (from handy-rss-build — re-verify, don't trust blindly)
+## Key facts (from kiji-build — re-verify, don't trust blindly)
 
 | Item | Value |
 |------|-------|
 | Upstream remote | `upstream` → `https://github.com/yanus171/Handy-News-Reader.git` (HTTPS, fetch) |
-| Origin remote | `origin` → `git@github.com:ShiroiKuma0/shiroikuma-handyrss.git` (SSH, push) |
+| Origin remote | `origin` → `git@github.com:ShiroiKuma0/shiroikuma-kiji.git` (SSH, push) |
 | Mirror branch | `master` — fast-forward only, never carries our changes |
 | Customization branch | `custom` — a **stack** of feature commits on top of the rebrand, rebased onto each release tag |
 | Current base (as of this skill's writing) | untagged `upstream/master` @ `3611801b` (2026-10-12), versionName base `1.1.35`, versionCode base `3720000` (= upstream `372` × 10000) — the latest tag `v1.1.6` is behind it |
-| Counter (external) | `$HOME/.handyrss_build_no` — outside the repo; **reset to 0 whenever the adopted base version changes** (new tag OR untagged master bump) so the first build on the new base is `+1`; on a **same-version refresh** it is left as-is and `+N` keeps growing |
+| Counter (external) | `$HOME/.kiji_build_no` — outside the repo; **reset to 0 whenever the adopted base version changes** (new tag OR untagged master bump) so the first build on the new base is `+1`; on a **same-version refresh** it is left as-is and `+N` keeps growing |
 | App module | `FlymFork` |
-| Build task (delegated) | `handy-rss-build` → `:FlymFork:assembleFdroidRelease` |
+| Build task (delegated) | `kiji-build` → `:FlymFork:assembleFdroidRelease` |
 
 **Tag-by-date caveat (critical):** the upstream repo carries ancient 2015-2016 Flym-era tags
 (`v1.8.0`, `v1.9.4`, …) that sort to the TOP lexically but are obsolete `mobile`/`wear`-layout code.
@@ -79,7 +79,7 @@ git for-each-ref --sort=creatordate --format='%(creatordate:short) %(refname:sho
 ```
 The current `FlymFork`-layout releases are `v0.18.x`, `v0.19.x`, `v1.0.x`, `v1.1.x`.
 
-**`custom` is a feature stack, NOT one commit.** The `handy-rss-build` "Update procedure" has a
+**`custom` is a feature stack, NOT one commit.** The `kiji-build` "Update procedure" has a
 fallback that *recreates `custom` from the tag and re-applies the four rebrand seds*. That fallback is
 ONLY valid for the original single-commit rebrand. Today `custom` is a couple dozen commits (rebrand +
 grid/fonts/colors/dialogs/etc.) and grows over time. **Never** recreate `custom` from scratch here — it would silently destroy every
@@ -92,7 +92,7 @@ Run the phases in order. Echo what you find at each gate; stop at the named STOP
 
 ### Phase 0 — Preflight & bootstrap
 
-1. `cd ~/git/shiroikuma-handyrss`. Confirm a clean tree: `git status --porcelain` must be empty. If
+1. `cd ~/git/shiroikuma-kiji`. Confirm a clean tree: `git status --porcelain` must be empty. If
    not, STOP and surface it (don't `reset --hard` someone's uncommitted work without asking).
 2. Note the current branch; remember to return to `custom` at the end.
 3. **Fetch upstream + tags:** `git fetch upstream --tags` and `git fetch origin --tags`.
@@ -176,7 +176,7 @@ refresh.) This replays the whole feature stack (rebrand + all features) onto the
 
 ### Phase 5 — Conflict triage (the heart of this skill)
 
-For each conflicting commit, judge magnitude. Use the canonical definitions in `handy-rss-build` to know
+For each conflicting commit, judge magnitude. Use the canonical definitions in `kiji-build` to know
 the *intended end state* of every edit: the 5 rebrand edits (applicationId, `PACKAGE_NAME`, manifest
 provider authorities, `app_name` label, APK naming) and the feature-commit descriptions (grid layout,
 configurable list/grid, per-surface fonts, reading-view CSS fonts, drawer colors, menu/settings/window
@@ -187,7 +187,7 @@ hunk *should* become, that skill's per-commit notes are the spec.
 **SMALL — resolve automatically, then continue:**
 - The conflict is only context drift (surrounding lines moved) around one of our edits, and the correct
   resolution is obvious from the canonical edit.
-- One of the 5 rebrand lines moved; re-apply the rebrand intent (the seds in `handy-rss-build` are the
+- One of the 5 rebrand lines moved; re-apply the rebrand intent (the seds in `kiji-build` are the
   definition).
 - Whitespace / import-ordering / adjacent-but-independent edits.
 - Heuristic: ≤ ~2 commits conflict, every conflict is an obvious re-application of a known edit, no
@@ -223,7 +223,7 @@ After every resolution, before `--continue`, make sure the working tree reflects
 
 **Master-tip refresh (`MODE=refresh`) where the master `versionName` is UNCHANGED: SKIP this phase.**
 Keep our version base exactly as it is — do NOT touch `build.gradle`'s `versionName`/`versionCode`, and
-do NOT reset the counter. The `handy-rss-build` build step bumps the counter as usual, so the next build
+do NOT reset the counter. The `kiji-build` build step bumps the counter as usual, so the next build
 is the current counter `+1` (e.g. `1.1.5+7`); our `+N` numbering just keeps growing across refreshes.
 
 **Master-tip refresh where upstream BUMPED the version on master without tagging: treat it as a release
@@ -242,10 +242,10 @@ Let `NEW_VN` = upstream versionName (e.g. `1.2.0`), `NEW_VC_BASE` = upstream ver
 (e.g. upstream `341` → `3410000`).
 
 1. **Counter reset** so the first build of the new upstream is `+1`:
-   `echo 0 > $HOME/.handyrss_build_no` (prefer explicit `0` over `rm -f` — the build step does
+   `echo 0 > $HOME/.kiji_build_no` (prefer explicit `0` over `rm -f` — the build step does
    `N=$(cat …)` and a missing file would error).
 2. **build.gradle** `defaultConfig`: set `versionName '<NEW_VN>+0'` and `versionCode <NEW_VC_BASE>` as a
-   valid placeholder. (The `handy-rss-build` build step owns the real stamp — it bumps the counter to 1
+   valid placeholder. (The `kiji-build` build step owns the real stamp — it bumps the counter to 1
    and writes `<NEW_VN>+1` / `<NEW_VC_BASE>+1` at build time. Leave the derived `applicationVariants`
    `def versionName/versionCode` lines untouched.)
 
@@ -258,7 +258,7 @@ When the base changed, the base literals `1.1.6` and `3410000` / `341` are **har
 places** that the build relies on. If you don't update them, the next build stamps the OLD base. Update
 the ACTIVE base literals
 (NOT the historical feature-commit version tags, which record what shipped and must stay):
-- **`.claude/skills/handy-rss-build/SKILL.md`** — the Versioning section, the Build "Version stamp"
+- **`.claude/skills/kiji-build/SKILL.md`** — the Versioning section, the Build "Version stamp"
   paragraph, the gradle/`sed` base literals, and the "Update procedure" base literals (`1.1.6` →
   `<NEW_VN>`, `3410000` → `<NEW_VC_BASE>`, `341` → upstream's new versionCode). Update its project-
   identity table's "latest upstream release" too.
@@ -272,35 +272,35 @@ but — like everything else — only **pushed** after the on-device confirmatio
 
 ### Phase 8 — Verify the rebrand + features survived
 
-Re-check the 5 rebrand edits are present on the rebased tree (per `handy-rss-build`'s verification list):
-- `FlymFork/build.gradle`: `applicationId 'shiroikuma.handyrss'` AND `namespace 'ru.yanus171.feedexfork'`
+Re-check the 5 rebrand edits are present on the rebased tree (per `kiji-build`'s verification list):
+- `FlymFork/build.gradle`: `applicationId 'shiroikuma.kiji'` AND `namespace 'ru.yanus171.feedexfork'`
   still intact (namespace must NOT have changed).
-- `FeedData.java`: `PACKAGE_NAME = "shiroikuma.handyrss"`.
-- `AndroidManifest.xml`: the three authorities `shiroikuma.handyrss.provider.FeedData` /
+- `FeedData.java`: `PACKAGE_NAME = "shiroikuma.kiji"`.
+- `AndroidManifest.xml`: the three authorities `shiroikuma.kiji.provider.FeedData` /
   `.fileprovider` / `.provider.WRITE_PERMISSION`.
-- `res/values/strings.xml`: `白い熊 Handy RSS`.
+- `res/values/strings.xml`: `白い熊 記事`.
 Also sanity-check the feature stack is all there: `git rev-list --count $REBASE_TARGET..custom` should
 equal `OLD_COUNT` captured in Phase 2 (a smaller number means a commit was dropped during the rebase —
 STOP and investigate before building); skim `git log --oneline $REBASE_TARGET..custom` to eyeball the
 features.
 
-### Phase 9 — Build, test, confirm, push (delegate to handy-rss-build)
+### Phase 9 — Build, test, confirm, push (delegate to kiji-build)
 
-1. **Invoke the `handy-rss-build` skill** to build `:FlymFork:assembleFdroidRelease`. It bumps the
+1. **Invoke the `kiji-build` skill** to build `:FlymFork:assembleFdroidRelease`. It bumps the
    counter and stamps the version — for a **release bump** `<NEW_VN>+1` / `<NEW_VC_BASE>+1` (counter
    0 → 1); for a **master-tip refresh** the unchanged base `+<next N>` (counter keeps growing, e.g.
    `1.1.4+40`) — filters output via the NOISE regex, and copies the APK to `~/tmp/`. Use its canonical
    command + flags verbatim — do not re-derive them here.
 2. **Deliver automatically.** After a successful build, invoke the global `/after-build` skill — it
    `/adb-check`s UNSANDBOXED, then `/adb-push`es to the phone if connected, else `/scp`s to `skhw`,
-   announcing what landed. No transfer prompt (handy-rss-build "Deliver" rule).
+   announcing what landed. No transfer prompt (kiji-build "Deliver" rule).
 3. **User tests on-device.** A new-upstream build deserves a real smoke test: launch, open an article
    (reading view), check the list/grid, fonts, and chrome colors all survived the rebase.
 4. **Only after the user confirms on-device** ("Push" / "good" / "confirmed"):
    - Stage **explicitly, NOT `git add -A`** — the working tree carries unrelated untracked files
      (`.bashrc`, `.claude/…`, etc.) that must never be committed. Add just the version stamp and any
      Phase 6–7 doc edits: `git add FlymFork/build.gradle` plus, on a release bump,
-     `.claude/skills/handy-rss-build/SKILL.md .claude/skills/upstream-new-version/SKILL.md CLAUDE.md`.
+     `.claude/skills/kiji-build/SKILL.md .claude/skills/upstream-new-version/SKILL.md CLAUDE.md`.
      Then commit (the rebased stack tip already carries the features; this commit records the last-built
      version stamp — for a refresh, e.g. "Rebase onto upstream master @ `<shortsha>`; build `1.1.4+N`").
      Because the rebase rewrote history, publishing `custom` is a **force-push**: `git push -f origin custom`.
@@ -314,7 +314,7 @@ features.
 
 - **Deliver automatically; never force-push on your own.** Build + local `~/tmp/` copy is fine after
   the build gate, and delivery to the phone is automatic via `/after-build` (no prompt); only
-  `git push -f origin custom` waits for on-device confirmation. (Inherits handy-rss-build's gates.)
+  `git push -f origin custom` waits for on-device confirmation. (Inherits kiji-build's gates.)
 - **Never recreate `custom` from scratch.** It's a feature stack — rebase it; if it won't rebase
   cleanly, that's a "significant conflict" to discuss, not a reason to rebuild from the rebrand seds.
 - **Show the new-functionality table and get an OK before every rebase.** Both modes: render the

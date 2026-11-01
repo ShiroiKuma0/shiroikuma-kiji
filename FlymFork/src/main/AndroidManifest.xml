@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
 
     <permission
-        android:name="shiroikuma.handyrss.provider.WRITE_PERMISSION"
+        android:name="shiroikuma.kiji.provider.WRITE_PERMISSION"
         android:protectionLevel="signature" />
     <queries>
         <!-- 保存復元: BOTH callers, and naming them is load-bearing twice over.
@@ -87,9 +87,9 @@
             android:name=".service.StateExportReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="shiroikuma.handyrss.action.EXPORT_STATE" />
-                <action android:name="shiroikuma.handyrss.action.LIST_CATEGORIES" />
-                <action android:name="shiroikuma.handyrss.action.CANCEL_EXPORT" />
+                <action android:name="shiroikuma.kiji.action.EXPORT_STATE" />
+                <action android:name="shiroikuma.kiji.action.LIST_CATEGORIES" />
+                <action android:name="shiroikuma.kiji.action.CANCEL_EXPORT" />
             </intent-filter>
         </receiver>
 
@@ -132,12 +132,12 @@
 
         <provider
             android:name=".provider.FeedDataContentProvider"
-            android:authorities="shiroikuma.handyrss.provider.FeedData"
+            android:authorities="shiroikuma.kiji.provider.FeedData"
             android:exported="false"
-            android:writePermission="shiroikuma.handyrss.provider.WRITE_PERMISSION" />
+            android:writePermission="shiroikuma.kiji.provider.WRITE_PERMISSION" />
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="shiroikuma.handyrss.fileprovider"
+            android:authorities="shiroikuma.kiji.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

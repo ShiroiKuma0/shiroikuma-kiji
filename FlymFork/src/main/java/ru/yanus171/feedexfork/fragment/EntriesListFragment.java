@@ -512,7 +512,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    // Long-press the top-right overflow button of the entry list -> open the 白い熊 Handy RSS UI
+    // Long-press the top-right overflow button of the entry list -> open the 白い熊 記事 UI
     // screen directly, the same shortcut the top-left home icon and the drawer settings button
     // already carry (HomeActivity.SetupHomeLongPress). The ActionMenuItemView for the menu item
     // only exists once the toolbar has laid the menu out, so the lookup is posted; returning true
@@ -1416,7 +1416,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                 cr.notifyChange( listUri, null );
                         }
                     }.start());
-            snackbar.getView().setBackgroundResource(R.color.material_grey_900);
+            UiUtils.styleSnackbar(snackbar);
             snackbar.show();
 
             new Thread() {

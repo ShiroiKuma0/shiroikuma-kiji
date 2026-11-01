@@ -30,16 +30,16 @@
 -->
 <resources>
 
-    <string name="app_name">白い熊 Handy RSS</string>
+    <string name="app_name">白い熊 記事</string>
     <string name="about_title_version">versioon</string>
     <string name="about_handy_news_reader">Sellsest äppist info</string>
     <string name="about_handy_news_reader_descr">Litsents, tugi, tõlked jne.</string>
-    <string name="welcome_title">Tere tulemast 白い熊 Handy RSS\'usse. Kas sa sooviksid lisada kanalit?</string>
+    <string name="welcome_title">Tere tulemast 白い熊 記事\'usse. Kas sa sooviksid lisada kanalit?</string>
     <string name="never">mitte kunagi</string>
     <string name="last_update">Värskenda</string>
     <string name="menu_settings">Sätted</string>
     <string name="menu_refresh">Värskenda nüüd</string>
-    <string name="flym_feeds">白い熊 Handy RSS\'u ksnalid</string>
+    <string name="flym_feeds">白い熊 記事\'u ksnalid</string>
     <string name="error">Tõrge</string>
     <string name="network_error">Sa oled võrguühenduseta</string>
     <string name="loading">Laadimine…</string>
@@ -125,7 +125,7 @@
     <string name="menu_mark_as_unread">Märgi mitteloetuks</string>
     <string name="menu_reload_full_text">Täistekst</string>
     <string name="menu_reload_full_text_without_mobilizer">Ilma Mobilizerita</string>
-    <string name="share_favorites_title">白い熊 Handy RSS: tärniga märgitud</string>
+    <string name="share_favorites_title">白い熊 記事: tärniga märgitud</string>
     <string name="link_was_copied_to_clipboard">Link kopeeritud</string>
     <string name="get_full_text">Laadi täisartikkel</string>
     <string name="show_text_in_entry_list">Kuva originaaltekst artikliloendis</string>
@@ -664,7 +664,7 @@
     <string name="none">pole</string>
     <string name="show_article_text">Artikli tekst</string>
     <string name="show_article_text_descr">Näita artikli teksti loendis</string>
-    <string name="shared_favorities_article_list_mail_sugject">白い熊 Handy RSSi lemmikartiklite loend</string>
+    <string name="shared_favorities_article_list_mail_sugject">白い熊 記事i lemmikartiklite loend</string>
     <string name="settings_remove_found_categories_from_text">Eemalda kategooriad tekstist</string>
     <string name="settings_remove_found_categories_from_text_descr">Eemalda leitud kategooriad artikli tekstist</string>
     <string name="settings_volume_buttons_action_descr">Kui artiklis on video, siis toimub ainult vaikimisi toiming</string>

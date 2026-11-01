@@ -30,16 +30,16 @@
 -->
 <resources>
 
-    <string name="app_name">白い熊 Handy RSS</string>
+    <string name="app_name">白い熊 記事</string>
     <string name="about_title_version">versión</string>
-    <string name="about_handy_news_reader">Acerca de 白い熊 Handy RSS</string>
+    <string name="about_handy_news_reader">Acerca de 白い熊 記事</string>
     <string name="about_handy_news_reader_descr">Licencia, soporte, traducciones, etc.</string>
-    <string name="welcome_title">Bienvenido a 白い熊 Handy RSS. ¿Te gustaría añadir una fuente?</string>
+    <string name="welcome_title">Bienvenido a 白い熊 記事. ¿Te gustaría añadir una fuente?</string>
     <string name="never">nunca</string>
     <string name="last_update">Actualizar</string>
     <string name="menu_settings">Configuración</string>
     <string name="menu_refresh">Actualizar</string>
-    <string name="flym_feeds">Fuentes de 白い熊 Handy RSS</string>
+    <string name="flym_feeds">Fuentes de 白い熊 記事</string>
     <string name="error">Error</string>
     <string name="network_error">No se ha configurado la red</string>
     <string name="loading">Cargando…</string>
@@ -125,7 +125,7 @@
     <string name="menu_mark_as_unread">Marcar como no leído</string>
     <string name="menu_reload_full_text">Recargar el texto completo</string>
     <string name="menu_reload_full_text_without_mobilizer">Recargar sin movilizador</string>
-    <string name="share_favorites_title">白い熊 Handy RSS: Artículos favoritos</string>
+    <string name="share_favorites_title">白い熊 記事: Artículos favoritos</string>
     <string name="link_was_copied_to_clipboard">Enlace copiado</string>
     <string name="get_full_text">Descargar el texto completo</string>
     <string name="show_text_in_entry_list">Mostrar texto original en la lista de artículos.</string>
@@ -659,7 +659,7 @@
     <string name="none">ninguna</string>
     <string name="show_article_text">Texto del artículo</string>
     <string name="show_article_text_descr">Mostrar texto del artículo en la lista</string>
-    <string name="shared_favorities_article_list_mail_sugject">Lista de artículos favoritos 白い熊 Handy RSS</string>
+    <string name="shared_favorities_article_list_mail_sugject">Lista de artículos favoritos 白い熊 記事</string>
     <string name="settings_remove_found_categories_from_text">Eliminar categorías del texto</string>
     <string name="settings_remove_found_categories_from_text_descr">Eliminar categorías encontradas del texto del artículo</string>
     <string name="settings_volume_buttons_action_descr">Sólo se dará la acción por defecto cuando el artículo contiene un vídeo</string>

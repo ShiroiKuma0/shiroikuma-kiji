@@ -30,7 +30,7 @@
 -->
 <resources>
 
-    <string name="app_name">白い熊 Handy RSS</string>
+    <string name="app_name">白い熊 記事</string>
     <string name="about_title_version">versão</string>
     <string name="about_handy_news_reader">Sobre o Leitor de Notícias Conveniente</string>
     <string name="about_handy_news_reader_descr">Licença, ajuda e como entrar em contato com o desenvolvedor </string>
@@ -494,7 +494,7 @@
         <item quantity="one">Um novo artigo.</item>
         <item quantity="other">%d artigos novos.</item>
     </plurals>
-    <string name="shared_favorities_article_list_mail_sugject">Lista de artigos favoritos do 白い熊 Handy RSS</string>
+    <string name="shared_favorities_article_list_mail_sugject">Lista de artigos favoritos do 白い熊 記事</string>
     <string name="settings_autobackup_requires_charging">Somente quando carregando</string>
     <string name="entry_show_menu">Mostrar Menu</string>
 </resources>

@@ -30,11 +30,11 @@
 -->
 <resources>
 
-    <string name="app_name">白い熊 Handy RSS</string>
+    <string name="app_name">白い熊 記事</string>
     <string name="about_title_version">الإصدار</string>
-    <string name="about_handy_news_reader">حَوْلَ 白い熊 Handy RSS</string>
+    <string name="about_handy_news_reader">حَوْلَ 白い熊 記事</string>
     <string name="about_handy_news_reader_descr">الترخيص، الدعم، الترجمات، إلخ.</string>
-    <string name="welcome_title">مرحبًا بك في 白い熊 Handy RSS. استقبل وتابع المحتوى الذي يهمك عن طريق:</string>
+    <string name="welcome_title">مرحبًا بك في 白い熊 記事. استقبل وتابع المحتوى الذي يهمك عن طريق:</string>
     <string name="never">مُطْلَقًا</string>
     <string name="last_update">تَحْديث</string>
     <string name="menu_settings">الإعدادات</string>
@@ -125,7 +125,7 @@
     <string name="menu_mark_as_unread">تحديده كغير مقروء</string>
     <string name="menu_reload_full_text">النص الكامل</string>
     <string name="menu_reload_full_text_without_mobilizer">بدون مواءمة</string>
-    <string name="share_favorites_title">白い熊 Handy RSS: المقالات المميزة</string>
+    <string name="share_favorites_title">白い熊 記事: المقالات المميزة</string>
     <string name="link_was_copied_to_clipboard">تم نسخ الرابط</string>
     <string name="get_full_text">تحميل النص الكامل</string>
     <string name="show_text_in_entry_list">إظهار النص الأصلي في قائمة المقالات</string>
@@ -669,7 +669,7 @@
     <string name="none">لا شيء</string>
     <string name="show_article_text">محتوى المقال</string>
     <string name="show_article_text_descr">إظهار محتوى المقال في القائمة</string>
-    <string name="shared_favorities_article_list_mail_sugject">قائمة المقالات المميزة لـ 白い熊 Handy RSS</string>
+    <string name="shared_favorities_article_list_mail_sugject">قائمة المقالات المميزة لـ 白い熊 記事</string>
     <string name="settings_remove_found_categories_from_text">إزالة التصنيفات من النص</string>
     <string name="settings_remove_found_categories_from_text_descr">إزالة التصنيفات المكتشفة من نص المقال</string>
     <string name="settings_volume_buttons_action_descr">سيتم استخدام الإجراء \"افتراضي\" تلقائيًا مع المقالات التي تتضمن فيديوهات</string>

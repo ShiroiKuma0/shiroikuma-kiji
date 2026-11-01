@@ -9,6 +9,35 @@ Each fork release names the upstream release it is built on. The build counter i
 
 ---
 
+## 白い熊 記事 1.1.35+007 — 2026-11-01
+
+Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
+
+### Renamed: 白い熊 Handy RSS → 白い熊 記事
+
+- **New name and package.** The app is now **白い熊 記事**, package `shiroikuma.kiji`, and the repository
+  is `ShiroiKuma0/shiroikuma-kiji`. Because the package id changed, it installs as a new app beside
+  the old `shiroikuma.handyrss` rather than over it.
+- **Moving your data across.** Export from the old app, then import into the new one with the
+  Export/Import panel. Backups named `shiroikuma-handyrss_…` are still found by “import newest”, and
+  nothing in them is tied to the old package. New exports are named `shiroikuma-kiji_…`.
+- **Automation.** The 保存復元 actions are now `shiroikuma.kiji.action.EXPORT_STATE`,
+  `LIST_CATEGORIES` and `CANCEL_EXPORT`, and the data door is `shiroikuma.kiji.automation`. A caller
+  that addressed the old package has to be pointed at `shiroikuma.kiji`.
+- **Stale crash reports no longer travel in backups.**
+
+### Black-and-yellow everywhere
+
+- **Wait strips** (Exporting to file, Importing, Download image, the feed-search “Loading…”) were a
+  grey Android slab with grey text. They are now the app’s black box with a yellow border and yellow
+  text.
+- **Undo snackbars** (marked as read / unread, removed from favourites) and the plain message bar
+  were grey with white text. They are now black rounded boxes with a yellow border, yellow text and a
+  yellow “Undo”.
+- **The “+N” page-count toast** in the reading view now matches every other toast.
+
+---
+
 ## 白い熊 Handy RSS 1.1.35+003 — 2026-11-01
 
 Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.

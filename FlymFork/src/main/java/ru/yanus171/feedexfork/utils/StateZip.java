@@ -47,7 +47,7 @@ import ru.yanus171.feedexfork.parser.OPML;
  * 保存復元 automation receiver — the single export core, with the UI panel and StateExportReceiver
  * as two thin callers.
  *
- * ONE zip per export, named `shiroikuma-handyrss_<yyyy-MM-dd_HH-mm-ss>.zip`:
+ * ONE zip per export, named `shiroikuma-kiji_<yyyy-MM-dd_HH-mm-ss>.zip`:
  *
  *   manifest.json     format / version / app / appVersion / createdTs / categories
  *   feeds.opml        the feed + group outlines, still Thunderbird-native (unzip and import)
@@ -69,6 +69,8 @@ import ru.yanus171.feedexfork.parser.OPML;
  */
 public class StateZip {
 
+    // The wire-format id, NOT a brand: it stayed "handyrss-state" through the 2026-11-01 rename to
+    // 白い熊 記事 (shiroikuma.kiji) so every archive written before the rename still imports.
     public static final String FORMAT = "handyrss-state";
     public static final int VERSION = 1;
 

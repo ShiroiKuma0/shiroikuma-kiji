@@ -29,11 +29,11 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="app_name">白い熊 Handy RSS</string>
+    <string name="app_name">白い熊 記事</string>
     <string name="about_title_version">版本</string>
     <string name="about_handy_news_reader">关于</string>
     <string name="about_handy_news_reader_descr">许可证、帮助、翻译等</string>
-    <string name="welcome_title">欢迎来到 白い熊 Handy RSS. 您想要添加一个Feed吗?</string>
+    <string name="welcome_title">欢迎来到 白い熊 記事. 您想要添加一个Feed吗?</string>
     <string name="never">从不</string>
     <string name="last_update">更新</string>
     <string name="menu_settings">设置</string>
@@ -125,7 +125,7 @@
     <string name="menu_mark_as_unread">标记为未读</string>
     <string name="menu_reload_full_text">重新加载全文</string>
     <string name="menu_reload_full_text_without_mobilizer">不以移动版视图重新加载</string>
-    <string name="share_favorites_title">白い熊 Handy RSS: 已标星条目</string>
+    <string name="share_favorites_title">白い熊 記事: 已标星条目</string>
     <string name="link_was_copied_to_clipboard">链接已复制</string>
     <string name="get_full_text">加载整篇文章</string>
     <string name="show_text_in_entry_list">在文章列表中显示原文</string>

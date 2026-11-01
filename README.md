@@ -1,9 +1,13 @@
-# 白い熊 Handy RSS
+# 白い熊 記事
 
 A personal, rebranded Android RSS reader — a fork of
 **[Handy News Reader](https://github.com/yanus171/Handy-News-Reader)** (itself a fork of
 [Flym](https://github.com/FredJul/Flym)). It installs **side-by-side** with the official app
-(`shiroikuma.handyrss`), with its own icon and name, fully signed for self-install.
+(`shiroikuma.kiji`), with its own icon and name, fully signed for self-install.
+
+> **Renamed on 2026-11-01** from *白い熊 Handy RSS* (`shiroikuma.handyrss`, repo `shiroikuma-handyrss`).
+> The new package id installs as a new app; move your feeds, articles and settings across with the
+> Export/Import panel — backups written under the old name import unchanged.
 
 **Latest release:** [`1.1.35+002`](../../releases/latest) · arm64 (universal) · Android 4.0+ · F-Droid flavor (no GMS).
 
@@ -24,10 +28,10 @@ A personal, rebranded Android RSS reader — a fork of
   bundled fonts or your own font files.
 - **Black / yellow chrome theme** — a high-contrast dark theme applied to every surface (window, toolbar,
   drawer, menus, dialogs, action icons), with user-customizable chrome and article-content colors.
-- **白い熊 Handy RSS UI screen** — one consolidated screen for all fonts & colors, styled with text-wide
+- **白い熊 記事 UI screen** — one consolidated screen for all fonts & colors, styled with text-wide
   underlined headings and thin section separators, reachable instantly by long-pressing the drawer's
   settings icon, the top-left home icon, or the article list's top-right ⋮ button.
-- **A backup that actually holds everything** — one ZIP, `shiroikuma-handyrss_<timestamp>.zip`,
+- **A backup that actually holds everything** — one ZIP, `shiroikuma-kiji_<timestamp>.zip`,
   covering **nine categories**: feeds, your **articles** with their read/starred/scroll state,
   labels and filters, the **downloaded article text**, the **downloaded images**, your **installed
   font files**, and the four settings groups. Stock's own backup carries none of the last three, and
@@ -81,7 +85,7 @@ A personal, rebranded Android RSS reader — a fork of
 ## Install
 
 Download the APK from the [latest release](../../releases/latest) and install it (allow installing from
-unknown sources). It updates cleanly over previous 白い熊 Handy RSS builds (stable signing key) and
+unknown sources). It updates cleanly over previous 白い熊 記事 builds (stable signing key) and
 coexists with the official app.
 
 ## Build

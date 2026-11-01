@@ -447,7 +447,7 @@ public abstract class EntryView {
                         LabelVoc.INSTANCE.setEntry( mEntryId, oldLabels );
                         mFavorite = true;
                     });
-            snackbar.getView().setBackgroundResource(R.color.material_grey_900);
+            UiUtils.styleSnackbar(snackbar);
             snackbar.show();
         }
     }

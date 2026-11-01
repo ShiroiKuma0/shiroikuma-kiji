@@ -232,6 +232,13 @@ public class Theme {
 	// runtime chrome_bg / chrome_fg prefs. Call AFTER dialog.show() (buttons/title don't
 	// exist before). The window-bg border shows through transparent list rows, so list
 	// dialogs must NOT paint their own opaque ListView background or it covers the stroke.
+	/** Text in the chrome foreground colour, for views no tint pass can find (progress messages). */
+	public static CharSequence ChromeText( CharSequence text ) {
+		final android.text.SpannableString s = new android.text.SpannableString( text );
+		s.setSpan( new android.text.style.ForegroundColorSpan( GetChromeFgInt() ), 0, s.length(),
+				   android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
+		return s;
+	}
 	public static void TintDialog( AlertDialog dialog ) {
 		if ( dialog == null ) return;
 		final int fg = GetChromeFgInt();

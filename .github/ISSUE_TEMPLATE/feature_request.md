@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for 白い熊 Handy RSS
+about: Suggest an idea for 白い熊 記事
 title: ''
 labels: ''
 

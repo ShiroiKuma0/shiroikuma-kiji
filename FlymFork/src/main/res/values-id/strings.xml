@@ -30,16 +30,16 @@
 -->
 <resources>
 
-    <string name="app_name">白い熊 Handy RSS</string>
+    <string name="app_name">白い熊 記事</string>
     <string name="about_title_version">versi</string>
-    <string name="about_handy_news_reader">Tentang 白い熊 Handy RSS</string>
+    <string name="about_handy_news_reader">Tentang 白い熊 記事</string>
     <string name="about_handy_news_reader_descr">Lisensi, dukungan, terjemahan, dll.</string>
-    <string name="welcome_title">Selamat datang di 白い熊 Handy RSS. Apakah Anda ingin menambahkan feed?</string>
+    <string name="welcome_title">Selamat datang di 白い熊 記事. Apakah Anda ingin menambahkan feed?</string>
     <string name="never">jangan pernah</string>
     <string name="last_update">Pembaruan</string>
     <string name="menu_settings">Pengaturan</string>
     <string name="menu_refresh">Segarkan</string>
-    <string name="flym_feeds">Feed 白い熊 Handy RSS</string>
+    <string name="flym_feeds">Feed 白い熊 記事</string>
     <string name="error">Galat</string>
     <string name="network_error">Anda sedang luring</string>
     <string name="loading">Memuat…</string>
@@ -124,7 +124,7 @@
     <string name="menu_mark_as_unread">Tandai belum dibaca</string>
     <string name="menu_reload_full_text">Teks lengkap</string>
     <string name="menu_reload_full_text_without_mobilizer">Tanpa Mobilizer</string>
-    <string name="share_favorites_title">白い熊 Handy RSS: entri favorit</string>
+    <string name="share_favorites_title">白い熊 記事: entri favorit</string>
     <string name="link_was_copied_to_clipboard">Tautan disalin</string>
     <string name="get_full_text">Muat artikel lengkap</string>
     <string name="show_text_in_entry_list">Tampilkan teks orisinal pada daftar artikel</string>

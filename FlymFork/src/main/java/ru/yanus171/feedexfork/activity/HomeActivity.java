@@ -766,7 +766,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     // Long-press the top-left actionbar icon (the windowActionBar up/home affordance) -> open the
-    // 白い熊 Handy RSS UI screen. The home button has no view id, so find it by its content
+    // 白い熊 記事 UI screen. The home button has no view id, so find it by its content
     // description (set by ActionBarDrawerToggle to the drawer open/close strings). Re-applied each
     // onResume (posted, so the action bar is laid out); setting the same listener again is harmless.
     private void SetupHomeLongPress() {

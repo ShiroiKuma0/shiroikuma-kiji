@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve 白い熊 Handy RSS
+about: Create a report to help us improve 白い熊 記事
 title: ''
 labels: ''
 

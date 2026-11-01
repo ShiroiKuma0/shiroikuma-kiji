@@ -16,8 +16,11 @@ public class WaitDialog extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        mDialog.setMessage(mMessage);
+        // The message view is not android.R.id.message on every ROM (EMUI keeps its own), so
+        // TintDialog cannot reach it; colour the text itself instead.
+        mDialog.setMessage(Theme.ChromeText(mMessage));
         mDialog.show();
+        Theme.TintDialog( mDialog ); // black/yellow chrome, like every other dialog
     }
 
     protected Void doInBackground(Void... args) {

@@ -26,9 +26,9 @@ import ru.yanus171.feedexfork.utils.StateZip;
  * it only ever writes where it was told to and reports what it did. Everything that moves data
  * through a caller-supplied descriptor lives behind AutomationProvider, which knows who is calling.
  *
- *   shiroikuma.handyrss.action.LIST_CATEGORIES  -> OK: + one `id<TAB>label<TAB>parent<TAB>on|off` line per category
- *   shiroikuma.handyrss.action.EXPORT_STATE     -> writes ONE zip, replies OK:path|bytes|human|n categories
- *   shiroikuma.handyrss.action.CANCEL_EXPORT    -> unwinds the running export; answers NOTHING
+ *   shiroikuma.kiji.action.LIST_CATEGORIES  -> OK: + one `id<TAB>label<TAB>parent<TAB>on|off` line per category
+ *   shiroikuma.kiji.action.EXPORT_STATE     -> writes ONE zip, replies OK:path|bytes|human|n categories
+ *   shiroikuma.kiji.action.CANCEL_EXPORT    -> unwinds the running export; answers NOTHING
  *
  * This receiver does NOT run the export. `goAsync()` does not extend the broadcast window, and an
  * export of thousands of files is orders of magnitude past it — so the gate, the request validation
@@ -45,9 +45,9 @@ public class StateExportReceiver extends BroadcastReceiver {
 
     private static final String TAG = "HandyRssAutomation";
 
-    public static final String ACTION_EXPORT_STATE    = "shiroikuma.handyrss.action.EXPORT_STATE";
-    public static final String ACTION_LIST_CATEGORIES = "shiroikuma.handyrss.action.LIST_CATEGORIES";
-    public static final String ACTION_CANCEL_EXPORT   = "shiroikuma.handyrss.action.CANCEL_EXPORT";
+    public static final String ACTION_EXPORT_STATE    = "shiroikuma.kiji.action.EXPORT_STATE";
+    public static final String ACTION_LIST_CATEGORIES = "shiroikuma.kiji.action.LIST_CATEGORIES";
+    public static final String ACTION_CANCEL_EXPORT   = "shiroikuma.kiji.action.CANCEL_EXPORT";
 
     @Override
     public void onReceive(Context context, final Intent intent) {

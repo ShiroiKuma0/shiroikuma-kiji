@@ -42,7 +42,7 @@ import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.parser.OPML;
 
 /**
- * HandyRss: the Export/Import panel opened from the top of the 白い熊 Handy RSS UI screen
+ * HandyRss: the Export/Import panel opened from the top of the 白い熊 記事 UI screen
  * (Kōjiki-style flow: one settable SAF export directory + "last export" line queried from it,
  * category checkboxes covering every settable item, ArcaneChat-style pill button row —
  * Cancel alone left, Import/Export grouped right). All chrome is black with yellow borders.
@@ -63,7 +63,10 @@ public class Eximport {
     // no version, no "-export" infix, no "-ui"/"-settings" suffix, because every sister app's
     // backups live in one directory and must sort and read uniformly. The pre-2026-07-25 name is
     // still recognised when looking for the last export, so older backups stay visible.
-    public static final String EXPORT_FILE_PREFIX = "shiroikuma-handyrss_";
+    public static final String EXPORT_FILE_PREFIX = "shiroikuma-kiji_";
+    // Written by this app before the 2026-11-01 rename (shiroikuma.handyrss → shiroikuma.kiji):
+    // still offered by "import newest", so the first restore into the renamed app finds them.
+    private static final String EXPORT_FILE_PREFIX_PRE_KIJI = "shiroikuma-handyrss_";
     public static final String EXPORT_FILE_EXT = ".zip";
     private static final String EXPORT_FILE_PREFIX_LEGACY = "shiroikuma-handyrss-export_";
 
@@ -76,7 +79,7 @@ public class Eximport {
     // belong here too: a backup must never carry the credential that unlocks the export receiver.
     private static final Set<String> EXPORT_EXCLUDE = new HashSet<>(Arrays.asList(
             OPML.EXPORT_DIR, OPML.EXPORT_DIR_SETTINGS, OPML.EXPORT_DIR_FEEDS, OPML.EXPORT_DIR_BACKUP,
-            OPML.EXPORT_LAST_SETTINGS, OPML.EXPORT_LAST_FEEDS, "data_folder",
+            OPML.EXPORT_LAST_SETTINGS, OPML.EXPORT_LAST_FEEDS, "data_folder", "crashText",
             AutomationAuth.PREF_ENABLED, AutomationAuth.PREF_REQUIRE_TOKEN, AutomationAuth.PREF_TOKEN ));
 
     private static final Set<String> COLOR_KEYS = new HashSet<>(Arrays.asList(
@@ -573,7 +576,8 @@ public class Eximport {
             for (DocumentFile f : dir.listFiles()) {
                 String name = f.getName();
                 if (!f.isFile() || name == null
-                        || !(name.startsWith(EXPORT_FILE_PREFIX) || name.startsWith(EXPORT_FILE_PREFIX_LEGACY)))
+                        || !(name.startsWith(EXPORT_FILE_PREFIX) || name.startsWith(EXPORT_FILE_PREFIX_PRE_KIJI)
+                            || name.startsWith(EXPORT_FILE_PREFIX_LEGACY)))
                     continue;
                 if (!name.endsWith(EXPORT_FILE_EXT) && !name.endsWith(".opml") && !name.endsWith(".backup"))
                     continue;

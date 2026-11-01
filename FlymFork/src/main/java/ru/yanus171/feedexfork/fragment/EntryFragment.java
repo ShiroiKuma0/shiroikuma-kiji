@@ -824,14 +824,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     GetSelectedEntryView().onPageSelected();
                 }
                 final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
-                Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
-                TextView textView = new TextView(getContext());
-                textView.setText( text );
-                textView.setPadding( 10, 10, 10, 10 );
-                if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
-                    textView.setBackgroundResource( R.drawable.toast_background );
-                toast.setView( textView );
-                toast.show();
+                UiUtils.styledToast( getContext(), text, Toast.LENGTH_SHORT );
                 mLastPagerPos = i;
             }
 

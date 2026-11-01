@@ -614,10 +614,11 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
 
     private fun AddFeedFromUserSelection(name: String, dialogCaption: String, loader: BaseLoader<ArrayList<HashMap<String, String>>>) {
         val pd = ProgressDialog(this@EditFeedActivity)
-        pd.setMessage(getString(R.string.loading))
+        pd.setMessage(Theme.ChromeText(getString(R.string.loading)))
         pd.setCancelable(true)
         pd.isIndeterminate = true
         pd.show()
+        Theme.TintDialog(pd)
         loaderManager.restartLoader(1, Bundle(), object : LoaderManager.LoaderCallbacks<ArrayList<HashMap<String, String>>> {
             override fun onCreateLoader(id: Int, args: Bundle): Loader<ArrayList<HashMap<String, String>>> {
                 return loader

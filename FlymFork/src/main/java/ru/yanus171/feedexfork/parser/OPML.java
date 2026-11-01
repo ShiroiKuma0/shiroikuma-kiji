@@ -236,7 +236,7 @@ public class OPML {
 
     public static String GetAutoBackupOPMLFileName() { return getContext().getCacheDir().getAbsolutePath() + "/" + AUTO_BACKUP_OPML_FILENAME; }
 
-    private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>白い熊 Handy RSS export</title>\n<dateCreated>";
+    private static final String START = "<?xml version='1.0' encoding='utf-8'?>\n<opml version='1.1'>\n<head>\n<title>白い熊 記事 export</title>\n<dateCreated>";
     private static final String AFTER_DATE = "</dateCreated>\n</head>\n<body>\n";
     private static final String OUTLINE_TITLE = "\t<outline title='";
     private static final String OUTLINE_TEXT = "' text='";   // Thunderbird names folders/feeds from text=
@@ -810,7 +810,7 @@ public class OPML {
                 }
 
                 if (url == null) { // No url => this is a folder/group outline
-                    // Only the OUTERMOST folder becomes a Handy RSS group. Deeper folders (the
+                    // Only the OUTERMOST folder becomes a 白い熊 記事 group. Deeper folders (the
                     // Thunderbird per-feed wrapper folders) are passthrough containers, so the feed
                     // inside still lands in the outermost category group.
                     if (sImportFeeds && mGroupDepth == 0 && title != null) {
@@ -1064,7 +1064,7 @@ public class OPML {
             if ( dir == null || !dir.canWrite() )
                 return;
             final String ts = new SimpleDateFormat( FILENAME_DATETIME_FORMAT ).format( new Date( System.currentTimeMillis() ) );
-            final DocumentFile file = dir.createFile( "application/octet-stream", "shiroikuma-handyrss_" + ts + ".backup" );
+            final DocumentFile file = dir.createFile( "application/octet-stream", "shiroikuma-kiji_" + ts + ".backup" );
             if ( file == null )
                 return;
             InputStream in = new FileInputStream( srcPath );

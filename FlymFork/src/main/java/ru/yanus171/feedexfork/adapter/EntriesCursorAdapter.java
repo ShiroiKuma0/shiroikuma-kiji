@@ -1277,7 +1277,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 Snackbar snackbar = Snackbar.make(parentView.getRootView().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
                         .setActionTextColor(ContextCompat.getColor(parentView.getContext(), R.color.light_theme_color_primary))
                         .setAction(R.string.undo, v -> SetIsRead(holder.entryID, feedID,false, false));
-                snackbar.getView().setBackgroundResource(R.color.material_grey_900);
+                UiUtils.styleSnackbar(snackbar);
                 snackbar.show();
             }
 
@@ -1367,7 +1367,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     mMapFavourite.put( entryId, isFavorite );
                     MainApplication.getContext().getContentResolver().notifyChange(mUri, null);
                 });
-            snackbar.getView().setBackgroundResource(R.color.material_grey_900);
+            UiUtils.styleSnackbar(snackbar);
             snackbar.show();
         }
     }

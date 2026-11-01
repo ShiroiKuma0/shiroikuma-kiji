@@ -30,17 +30,17 @@
 -->
 <resources>
 
-    <string name="app_name">白い熊 Handy RSS</string>
+    <string name="app_name">白い熊 記事</string>
     <string name="about_title_version">version</string>
-    <string name="about_handy_news_reader">À propos de 白い熊 Handy RSS</string>
+    <string name="about_handy_news_reader">À propos de 白い熊 記事</string>
     <string name="about_handy_news_reader_descr">Licence, aide et contacter le développeur </string>
-    <string name="welcome_title">Bienvenue sur 白い熊 Handy RSS. Voulez vous ajouter un flux ?</string>
+    <string name="welcome_title">Bienvenue sur 白い熊 記事. Voulez vous ajouter un flux ?</string>
     <string name="never">jamais</string>
     <string name="last_update">Mise à jour</string>
     <string name="colon">\u00A0:\u00A0</string>
     <string name="menu_settings">Paramètres</string>
     <string name="menu_refresh">Actualiser</string>
-    <string name="flym_feeds">Flux 白い熊 Handy RSS</string>
+    <string name="flym_feeds">Flux 白い熊 記事</string>
     <string name="error">Erreur</string>
     <string name="network_error">Vous êtes hors ligne.</string>
     <string name="loading">Chargement en cours…</string>
@@ -126,7 +126,7 @@
     <string name="menu_mark_as_unread">Marquer comme non lu</string>
     <string name="menu_reload_full_text">Recharger tout le texte</string>
     <string name="menu_reload_full_text_without_mobilizer">Recharger sans Mobilizer</string>
-    <string name="share_favorites_title">白い熊 Handy RSS: articles favoris</string>
+    <string name="share_favorites_title">白い熊 記事: articles favoris</string>
     <string name="link_was_copied_to_clipboard">Lien copié</string>
     <string name="get_full_text">Récupérer complètement les articles</string>
     <string name="show_text_in_entry_list">Afficher le texte original sur la liste des articles</string>

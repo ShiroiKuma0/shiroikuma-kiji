@@ -30,23 +30,23 @@
 <resources>
 
     <string name="about_us_content" translatable="false"><![CDATA[
-    <h2>白い熊 Handy RSS</h2>
+    <h2>白い熊 記事</h2>
     <p>A personal RSS reader.</p>
     <p>This program is Free/Libre Open-Source Software, licensed under the GNU General Public License v3 or later. See <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p>
     <h2>Source</h2>
-    <p><a href="https://github.com/ShiroiKuma0/shiroikuma-handyrss">github.com/ShiroiKuma0/shiroikuma-handyrss</a></p>
+    <p><a href="https://github.com/ShiroiKuma0/shiroikuma-kiji">github.com/ShiroiKuma0/shiroikuma-kiji</a></p>
     ]]></string>
-    <string name="app_name">白い熊 Handy RSS</string>
+    <string name="app_name">白い熊 記事</string>
     <string name="about_title_version">version</string>
-    <string name="about_handy_news_reader">About 白い熊 Handy RSS</string>
+    <string name="about_handy_news_reader">About 白い熊 記事</string>
     <string name="about_handy_news_reader_descr">License, support, translations, etc.</string>
-    <string name="welcome_title">Welcome to 白い熊 Handy RSS. Would you like to add a feed?</string>
+    <string name="welcome_title">Welcome to 白い熊 記事. Would you like to add a feed?</string>
     <string name="never">never</string>
     <string name="last_update">Update</string>
     <string name="colon">:\u00A0</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
-    <string name="flym_feeds">白い熊 Handy RSS Feeds</string>
+    <string name="flym_feeds">白い熊 記事 Feeds</string>
     <string name="error">Error</string>
     <string name="network_error">You are off-line</string>
     <string name="loading">Loading…</string>
@@ -135,7 +135,7 @@
     <string name="menu_mark_as_unread">Mark as unread</string>
     <string name="menu_reload_full_text">Full text</string>
     <string name="menu_reload_full_text_without_mobilizer">Without Mobilizer</string>
-    <string name="share_favorites_title">白い熊 Handy RSS: starred entries</string>
+    <string name="share_favorites_title">白い熊 記事: starred entries</string>
     <string name="link_was_copied_to_clipboard">Link copied</string>
     <string name="get_full_text">Show full article</string>
     <string name="show_text_in_entry_list">Show original text on article list</string>
@@ -710,7 +710,7 @@
     <string name="none">none</string>
     <string name="show_article_text">Article text</string>
     <string name="show_article_text_descr">Show article text in list</string>
-    <string name="shared_favorities_article_list_mail_sugject">白い熊 Handy RSS favourite article list</string>
+    <string name="shared_favorities_article_list_mail_sugject">白い熊 記事 favourite article list</string>
     <string name="settings_remove_found_categories_from_text">Remove categories from text</string>
     <string name="settings_remove_found_categories_from_text_descr">Remove found categories from article text</string>
     <string name="settings_volume_buttons_action_descr">There will be only default action when an article has video</string>
@@ -761,7 +761,7 @@
     <string name="settings_read_text_size">Article text size</string>
     <string name="settings_read_title_size">Article title size</string>
     <string name="settings_read_text_font">Article text font</string>
-    <string name="settings_category_fonts">白い熊 Handy RSS UI</string>
+    <string name="settings_category_fonts">白い熊 記事 UI</string>
     <!-- Export/Import (UI screen top section + category panel) -->
     <string name="settings_export_section">Export / Import</string>
     <string name="settings_export_btn_export">Export</string>
@@ -808,7 +808,7 @@
     <string name="automation_battery_title">Let the backup finish in the background</string>
     <string name="automation_data_export_title">Backing up app data</string>
     <string name="automation_data_import_title">Restoring app data</string>
-    <string name="automation_battery_text">Tap to exempt 白い熊 Handy RSS from battery optimisation. On Huawei also set アプリ起動管理 → 手動管理 with バックグラウンドで実行 ON — no app can set that for itself.</string>
+    <string name="automation_battery_text">Tap to exempt 白い熊 記事 from battery optimisation. On Huawei also set アプリ起動管理 → 手動管理 with バックグラウンドで実行 ON — no app can set that for itself.</string>
     <string name="settings_color_background">Article background</string>
     <string name="settings_color_quote_bg">Quote background</string>
     <string name="settings_color_quote_bar">Quote bar</string>

@@ -143,8 +143,21 @@ public class UiUtils {
     static public void showMessage(@NonNull Activity activity, @NonNull String message) {
         View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
         Snackbar snackbar = Snackbar.make((coordinatorLayout != null ? coordinatorLayout : activity.findViewById(android.R.id.content)), message, Snackbar.LENGTH_LONG);
-        snackbar.getView().setBackgroundResource(R.color.material_grey_900);
+        styleSnackbar(snackbar);
         snackbar.show();
+    }
+
+    // HandyRss: a snackbar in the chrome colors — the same black/yellow rounded box as styledToast,
+    // yellow message and yellow action (stock is a grey slab with white text).
+    static public void styleSnackbar(Snackbar snackbar) {
+        final int fg = Theme.GetChromeFgInt();
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(Theme.GetChromeBgInt());
+        bg.setStroke(dpToPixel(2), fg);
+        bg.setCornerRadius(dpToPixel(12));
+        snackbar.getView().setBackground(bg);
+        snackbar.setTextColor(fg);
+        snackbar.setActionTextColor(fg);
     }
 
     static public Bitmap getFaviconBitmap( String iconUrl ){

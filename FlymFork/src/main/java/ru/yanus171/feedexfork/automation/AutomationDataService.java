@@ -61,7 +61,7 @@ public class AutomationDataService extends Service {
 
     private static final String TAG = "HandyRssAutomation";
 
-    private static final String ACTION_CANCEL = "shiroikuma.handyrss.internal.CANCEL_AUTOMATION_DATA";
+    private static final String ACTION_CANCEL = "shiroikuma.kiji.internal.CANCEL_AUTOMATION_DATA";
 
     private static final String EXTRA_JOB       = "job";
     private static final String EXTRA_IMPORTING = "importing";
@@ -141,7 +141,7 @@ public class AutomationDataService extends Service {
 
         final PowerManager pm = (PowerManager) getSystemService( Context.POWER_SERVICE );
         final PowerManager.WakeLock wakeLock = pm == null ? null
-                : pm.newWakeLock( PowerManager.PARTIAL_WAKE_LOCK, "handyrss:automation-data" );
+                : pm.newWakeLock( PowerManager.PARTIAL_WAKE_LOCK, "kiji:automation-data" );
 
         // ONE flag for the whole window between draining HANDOVER and the thread owning the
         // descriptor — not a guard per failure. The descriptor has already left the map by now, so
@@ -177,7 +177,7 @@ public class AutomationDataService extends Service {
                         wakeLock.release();
                     finish();
                 }
-            }, "handyrss-automation-data" ).start();
+            }, "kiji-automation-data" ).start();
             handedOff = true;
         } catch ( Throwable t ) {
             Log.e( TAG, "cannot hand off automation data job", t );

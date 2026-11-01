@@ -56,8 +56,8 @@ public class StateExportService extends Service {
 
     private static final String TAG = "HandyRssAutomation";
 
-    static final String ACTION_RUN    = "shiroikuma.handyrss.internal.RUN_EXPORT";
-    static final String ACTION_CANCEL = "shiroikuma.handyrss.internal.CANCEL_EXPORT";
+    static final String ACTION_RUN    = "shiroikuma.kiji.internal.RUN_EXPORT";
+    static final String ACTION_CANCEL = "shiroikuma.kiji.internal.CANCEL_EXPORT";
 
     static final String EXTRA_TOKEN           = "token";
     static final String EXTRA_PATH            = "path";
@@ -134,7 +134,7 @@ public class StateExportService extends Service {
         // silently truncating.
         final PowerManager pm = (PowerManager) getSystemService( Context.POWER_SERVICE );
         final PowerManager.WakeLock wakeLock = pm == null ? null
-                : pm.newWakeLock( PowerManager.PARTIAL_WAKE_LOCK, "handyrss:state-export" );
+                : pm.newWakeLock( PowerManager.PARTIAL_WAKE_LOCK, "kiji:state-export" );
         if ( wakeLock != null )
             wakeLock.acquire( 60 * 60 * 1000L );
 
@@ -151,7 +151,7 @@ public class StateExportService extends Service {
                     wakeLock.release();
                 finish();
             }
-        }, "handyrss-state-export" ).start();
+        }, "kiji-state-export" ).start();
 
         return START_NOT_STICKY;
     }
@@ -483,7 +483,7 @@ public class StateExportService extends Service {
                     if ( mBeating && System.currentTimeMillis() - mLastSentAt >= PROGRESS_HEARTBEAT_MS )
                         send( mItem, mCurrent, mTotal, mUnit, mText );
                 }
-            }, "handyrss-export-heartbeat" );
+            }, "kiji-export-heartbeat" );
             t.setDaemon( true );
             t.start();
         }
