@@ -9,6 +9,22 @@ Each fork release names the upstream release it is built on. The build counter i
 
 ---
 
+## 白い熊 Handy RSS 1.1.35+003 — 2026-11-01
+
+Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
+
+### Fixes & behavior
+
+- **Memory leak in the reading view fixed.** Each article page subscribed to app-wide link-status
+  updates and unsubscribed only when it was swiped out of the pager. The pages still open when you
+  left an article never unsubscribed, so every article screen you closed stayed in memory with its
+  web view. After a night of reading the app held 41 screens, 114 web views and 728 MB. Every page
+  left in the pager is now destroyed when the article screen closes. Measured on the phone: ten
+  open-and-close rounds leave 3 screens, 2 web views and about 156 MB, where each round used to add
+  one screen and one web view for good.
+
+---
+
 ## 白い熊 Handy RSS 1.1.35+002 — 2026-10-31
 
 Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.

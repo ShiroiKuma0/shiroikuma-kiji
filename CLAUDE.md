@@ -16,7 +16,7 @@ Before any change on this repo, read **`.claude/skills/handy-rss-build/SKILL.md`
 
 ## External state — outside this repo, must be preserved across sessions
 
-- **`$HOME/.handyrss_build_no`** — the build counter. **Currently `2`** (reset to 0 when the base moved `1.1.6` → `1.1.35` on the 2026-10-31 master-tip rebase; the previous base's last build was `1.1.6+014`). Never commit.
+- **`$HOME/.handyrss_build_no`** — the build counter. **Currently `3`** (reset to 0 when the base moved `1.1.6` → `1.1.35` on the 2026-10-31 master-tip rebase; the previous base's last build was `1.1.6+014`). Never commit.
 - **`~/.android-keystores/handyrss-custom.jks`** — signing keystore (alias `handyrss`). Without it, builds cannot be signed.
 - **`~/tmp/`** — APK archive directory. Never committed; persists across sessions.
 - **`~/git/shiroikuma-handyrss`** — the local working clone (this repo).

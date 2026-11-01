@@ -326,6 +326,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @Override
     public void onDestroy() {
         FetcherService.Status().deleteObserver(mStatusText);
+        if ( mEntryPagerAdapter != null )
+            mEntryPagerAdapter.DestroyAll();
         ArticleTextExtractor.mLastLoadedAllDoc = "";
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true);
         super.onDestroy();

@@ -45,6 +45,16 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
             mEntryViews.valueAt(i).onPause();
     }
 
+    // destroyItem only runs for pages swiped out of the pager's window; the pages
+    // still on screen when the Activity goes away never get it. WebEntryView
+    // subscribes to the process-wide static EntryUrlVoc observable, so each of
+    // those undestroyed views pinned its EntryActivity (and WebView) forever.
+    void DestroyAll() {
+        for (int i = 0; i < mEntryViews.size(); i++)
+            mEntryViews.valueAt(i).Destroy();
+        mEntryViews.clear();
+    }
+
     EntryView GetEntryView(int pagerPos) {
         return mEntryViews.get(pagerPos);
     }
