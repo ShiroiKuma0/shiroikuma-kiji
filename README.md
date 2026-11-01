@@ -9,7 +9,7 @@ A personal, rebranded Android RSS reader — a fork of
 > The new package id installs as a new app; move your feeds, articles and settings across with the
 > Export/Import panel — backups written under the old name import unchanged.
 
-**Latest release:** [`1.1.35+002`](../../releases/latest) · arm64 (universal) · Android 4.0+ · F-Droid flavor (no GMS).
+**Latest release:** [`1.1.35+007`](../../releases/latest) · arm64 (universal) · Android 4.0+ · F-Droid flavor (no GMS).
 
 ## What this fork adds on top of Handy News Reader
 
