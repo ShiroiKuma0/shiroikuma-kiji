@@ -9,6 +9,35 @@ Each fork release names the upstream release it is built on. The build counter i
 
 ---
 
+## 白い熊 記事 1.1.35+009 — 2026-11-08
+
+Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
+(`1.1.35+008` was an unreleased test build; everything in it is included here.)
+
+### Fixes & behavior
+
+- **Feeds refresh in the background again.** Since the rename to `shiroikuma.kiji`, every scheduled
+  refresh failed: on Android 12 an app may not start a foreground service from the background unless
+  it is exempt from battery optimisation, and the new package was not. Feeds then updated only while
+  the app was open. When Android refuses, the scheduled job now runs the refresh itself — the way the
+  auto-backup and delete-old jobs already work — so background refresh no longer depends on the
+  battery exemption. (With the exemption, the refresh still runs as a service with its notification.)
+- **Undo snackbars are visible again.** “Marked as read”, “Removed from favourites” and the message
+  bar appeared under the bottom status lines (“Updating feeds …”) and the page-down tap zone, so they
+  were hidden and a tap on “Undo” turned the page instead. They now sit just above that strip, in
+  whichever pane they belong to.
+
+### UI & theming
+
+- **Pressable rows are outlined pills** on the 白い熊 記事 UI screen, following the shared
+  black-and-yellow rule for settings pages: a row that does something when tapped is a full-width
+  outlined pill with its explanation beneath, and a › when it opens something. **Export / Import** is
+  the section’s main action: a thick frame and a bold label. Only the pill reacts to a tap. The token
+  row’s **Regenerate** button gets the thin frame of a secondary action. Rows with their own value or
+  control (fonts, weights, sizes, intervals, checkboxes) are unchanged.
+
+---
+
 ## 白い熊 記事 1.1.35+007 — 2026-11-01
 
 Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
