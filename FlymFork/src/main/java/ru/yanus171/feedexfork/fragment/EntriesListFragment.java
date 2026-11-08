@@ -1402,7 +1402,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             // full-text download, a silent mark-as-read) holds SetNotifyEnabled(false), and then this
             // list never reloads although the rows are updated. So notify the list's own URI directly.
             final Uri listUri = mCurrentUri;
-            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), read ? R.string.marked_as_read : R.string.marked_as_unread, Snackbar.LENGTH_LONG)
+            final View snackbarTarget = getActivity().findViewById(R.id.coordinator_layout);
+            Snackbar snackbar = Snackbar.make(snackbarTarget, read ? R.string.marked_as_read : R.string.marked_as_unread, Snackbar.LENGTH_LONG)
                     .setAction(R.string.undo, v -> new Thread() {
                         @Override
                         public void run() {
@@ -1416,7 +1417,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                                 cr.notifyChange( listUri, null );
                         }
                     }.start());
-            UiUtils.styleSnackbar(snackbar);
+            UiUtils.styleSnackbar(snackbar, snackbarTarget);
             snackbar.show();
 
             new Thread() {

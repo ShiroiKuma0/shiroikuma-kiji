@@ -1274,10 +1274,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                 UpdateReadView(holder, parentView);
             SetIsRead(holder.entryID, feedID, holder.isRead, true);
             if ( holder.isRead && mShowUnread ) {
-                Snackbar snackbar = Snackbar.make(parentView.getRootView().findViewById(R.id.coordinator_layout), R.string.marked_as_read, Snackbar.LENGTH_LONG)
+                final View snackbarTarget = parentView.getRootView().findViewById(R.id.coordinator_layout);
+                Snackbar snackbar = Snackbar.make(snackbarTarget, R.string.marked_as_read, Snackbar.LENGTH_LONG)
                         .setActionTextColor(ContextCompat.getColor(parentView.getContext(), R.color.light_theme_color_primary))
                         .setAction(R.string.undo, v -> SetIsRead(holder.entryID, feedID,false, false));
-                UiUtils.styleSnackbar(snackbar);
+                UiUtils.styleSnackbar(snackbar, snackbarTarget);
                 snackbar.show();
             }
 
@@ -1359,7 +1360,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             }
         }.start();
         if ( !isFavorite ) {
-            Snackbar snackbar = Snackbar.make( parentView.getRootView().findViewById(R.id.pageDownBtn), R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
+            final View snackbarTarget = parentView.getRootView().findViewById(R.id.pageDownBtn);
+            Snackbar snackbar = Snackbar.make( snackbarTarget, R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
                 .setActionTextColor(ContextCompat.getColor(parentView.getContext(), R.color.light_theme_color_primary))
                 .setAction(R.string.undo, v -> {
                     SetIsFavorite( parentView, entryId, true, false);
@@ -1367,7 +1369,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                     mMapFavourite.put( entryId, isFavorite );
                     MainApplication.getContext().getContentResolver().notifyChange(mUri, null);
                 });
-            UiUtils.styleSnackbar(snackbar);
+            UiUtils.styleSnackbar(snackbar, snackbarTarget);
             snackbar.show();
         }
     }

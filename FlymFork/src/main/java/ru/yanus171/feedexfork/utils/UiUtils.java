@@ -142,14 +142,26 @@ public class UiUtils {
 
     static public void showMessage(@NonNull Activity activity, @NonNull String message) {
         View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
-        Snackbar snackbar = Snackbar.make((coordinatorLayout != null ? coordinatorLayout : activity.findViewById(android.R.id.content)), message, Snackbar.LENGTH_LONG);
-        styleSnackbar(snackbar);
+        final View target = coordinatorLayout != null ? coordinatorLayout : activity.findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(target, message, Snackbar.LENGTH_LONG);
+        styleSnackbar(snackbar, target);
         snackbar.show();
     }
 
     // HandyRss: a snackbar in the chrome colors — the same black/yellow rounded box as styledToast,
     // yellow message and yellow action (stock is a grey slab with white text).
-    static public void styleSnackbar(Snackbar snackbar) {
+    // `from` is the view the snackbar was made on: the snackbar is lifted above the bottom overlay
+    // (page-down tap zone + status/progress lines) of the same pane, which is drawn over the
+    // coordinator and otherwise hides the snackbar under "Updating feeds …".
+    static public void styleSnackbar(Snackbar snackbar, View from) {
+        for ( View v = from; v != null; v = v.getParent() instanceof View ? (View) v.getParent() : null ) {
+            View overlay = v.findViewById(R.id.bottomOverlay);
+            if ( overlay != null ) {
+                if ( overlay.isShown() )
+                    snackbar.setAnchorView(overlay);
+                break;
+            }
+        }
         final int fg = Theme.GetChromeFgInt();
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(Theme.GetChromeBgInt());

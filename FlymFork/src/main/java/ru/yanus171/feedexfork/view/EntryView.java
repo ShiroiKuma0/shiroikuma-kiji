@@ -440,14 +440,15 @@ public abstract class EntryView {
             if ( showToast )
                 UiUtils.toast( R.string.entry_marked_favourite );
         } else {
-            Snackbar snackbar = Snackbar.make(mEntryFragment.getView().getRootView().findViewById(R.id.pageDownBtn), R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
+            final View snackbarTarget = mEntryFragment.getView().getRootView().findViewById(R.id.pageDownBtn);
+            Snackbar snackbar = Snackbar.make(snackbarTarget, R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
                     .setActionTextColor(ContextCompat.getColor(getContext(), R.color.light_theme_color_primary))
                     .setAction(R.string.undo, v -> {
                         SetIsFavorite( true, false );
                         LabelVoc.INSTANCE.setEntry( mEntryId, oldLabels );
                         mFavorite = true;
                     });
-            UiUtils.styleSnackbar(snackbar);
+            UiUtils.styleSnackbar(snackbar, snackbarTarget);
             snackbar.show();
         }
     }
