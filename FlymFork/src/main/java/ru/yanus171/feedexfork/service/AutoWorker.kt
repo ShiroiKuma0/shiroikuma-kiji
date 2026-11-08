@@ -47,7 +47,7 @@ class AutoWorker(context: Context, workerParams: WorkerParameters) : Worker(cont
             else if (tags.contains( DELETE_OLD_JOB_ID) )
                 ExecuteDeleteOld()
             else if (isSyncActive && tags.contains( AUTO_REFRESH_JOB_ID ) )
-                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH), true)
+                startAutoRefresh()
         }
         return Result.success()
     }
@@ -68,6 +68,26 @@ class AutoWorker(context: Context, workerParams: WorkerParameters) : Worker(cont
                         MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID,
                         createCancelPI())
         return ForegroundInfo( NOTIFICATION_ID_REFRESH_SERVICE, notification )
+    }
+
+    // 白い熊: on Android 12+ (targetSdk 31) a background job may not start a foreground service
+    // unless the app is exempt from battery optimisation — startForegroundService() throws
+    // ForegroundServiceStartNotAllowedException and the refresh silently never happens (every
+    // 30-minute run failed this way after the rename to shiroikuma.kiji, a new package the
+    // phone had not exempted). Then run the refresh right here in the worker instead, the way
+    // the auto-backup and delete-old jobs already do: Process(intent, null) runs the LongOper
+    // synchronously under its wakelock, with no service and no startForeground().
+    private fun startAutoRefresh() {
+        val intent = FetcherService.GetIntent(Constants.FROM_AUTO_REFRESH)
+        try {
+            FetcherService.Start(intent, true)
+        } catch (e: Exception) {
+            if (Build.VERSION.SDK_INT >= 31 && e is android.app.ForegroundServiceStartNotAllowedException) {
+                Dog.e("AutoWorker: foreground service not allowed from background, refreshing in the worker", e)
+                FetcherService.Process(intent, null)
+            } else
+                throw e
+        }
     }
 
     private val isSyncActive: Boolean
