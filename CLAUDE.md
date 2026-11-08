@@ -16,7 +16,7 @@ Before any change on this repo, read **`.claude/skills/kiji-build/SKILL.md`** in
 
 ## External state — outside this repo, must be preserved across sessions
 
-- **`$HOME/.kiji_build_no`** — the build counter. **Currently `7`** (reset to 0 when the base moved `1.1.6` → `1.1.35` on the 2026-10-31 master-tip rebase; the previous base's last build was `1.1.6+014`). Never commit.
+- **`$HOME/.kiji_build_no`** — the build counter. **Currently `9`** (reset to 0 when the base moved `1.1.6` → `1.1.35` on the 2026-10-31 master-tip rebase; the previous base's last build was `1.1.6+014`). Never commit.
 - **`~/.android-keystores/handyrss-custom.jks`** — signing keystore (alias `handyrss`). Without it, builds cannot be signed.
 - **`~/tmp/`** — APK archive directory. Never committed; persists across sessions.
 - **`~/git/shiroikuma-kiji`** — the local working clone (this repo).
