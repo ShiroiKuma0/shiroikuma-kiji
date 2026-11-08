@@ -3,7 +3,8 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
     xmlns:startActivity="ru.yanus171.feedexfork.views.StartActivityPreference"
-    xmlns:colorPreference="ru.yanus171.feedexfork.view.ColorPreference">
+    xmlns:colorPreference="ru.yanus171.feedexfork.view.ColorPreference"
+    xmlns:pill="ru.yanus171.feedexfork.view.PillPreference">
 
     <PreferenceScreen
         android:icon="@drawable/prefs_info"
@@ -202,11 +203,13 @@
             android:layout="@layout/preference_font_topcat_first"
             android:title="@string/settings_export_section"/>
 
-        <Preference
-            android:layout="@layout/preference_indented"
+        <!-- The section's one panel: its main action, so a thick bold pill with › . -->
+        <ru.yanus171.feedexfork.view.PillPreference
             android:key="eximport_open"
             android:title="@string/settings_export_section"
-            android:summary="@string/eim_desc"/>
+            android:summary="@string/eim_desc"
+            pill:main="true"
+            pill:opens="true"/>
 
         <!-- 保存復元 v2: default ON. Keep this defaultValue in lockstep with
              AutomationAuth.isEnabled()'s own default — the two disagreeing is the exact bug that

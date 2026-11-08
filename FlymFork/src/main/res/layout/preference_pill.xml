@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 白い熊: a pressable settings row (black-yellow-theme skill, "every pressable row is a pill",
+     2026-11-07): a full-width OUTLINED pill holding the label, › at its right end when the row opens
+     something, and the explanation beneath the pill in dim gold, aligned with the label. Indent is
+     the kxkb L1 72dip, like preference_indented. PillPreference draws the frame (3 dp + bold for
+     the section's main action, 1.25 dp otherwise) and makes the pill — not the whole row — the
+     touch target. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="72dip" android:paddingEnd="16dip"
+    android:paddingTop="6dip" android:paddingBottom="6dip">
+
+    <LinearLayout android:id="@+id/pill"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:clickable="true" android:focusable="true"
+        android:paddingStart="18dip" android:paddingEnd="16dip"
+        android:paddingTop="9dip" android:paddingBottom="9dip">
+        <TextView android:id="@android:id/title"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/menu_pref_fg" android:textSize="16sp"/>
+        <TextView android:id="@+id/pill_chevron"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:includeFontPadding="false"
+            android:text="›"
+            android:textColor="@color/menu_pref_fg" android:textSize="22sp"/>
+    </LinearLayout>
+
+    <TextView android:id="@android:id/summary"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:paddingStart="18dip" android:paddingTop="3dip"
+        android:textColor="@color/menu_pref_fg_dim" android:textSize="13sp"
+        android:maxLines="6"/>
+</LinearLayout>

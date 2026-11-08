@@ -48,7 +48,8 @@ public class AutomationTokenPreference extends Preference {
             final GradientDrawable pill = new GradientDrawable();
             pill.setCornerRadius( 100 * getContext().getResources().getDisplayMetrics().density );
             pill.setColor( bg );
-            pill.setStroke( UiUtils.dpToPixel( 2 ), fg );
+            // A secondary action: the thin 1.25 dp frame (black-yellow-theme pill rule).
+            pill.setStroke( Math.max( 1, Math.round( 1.25f * getContext().getResources().getDisplayMetrics().density ) ), fg );
             regenerate.setBackground( pill );
             regenerate.setTextColor( fg );
             regenerate.setOnClickListener( v -> confirmRegenerate() );
