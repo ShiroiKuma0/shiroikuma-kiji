@@ -52,7 +52,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
+import android.preference.CheckBoxPreference;
+import android.preference.DialogPreference;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceGroup;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
@@ -68,8 +73,10 @@ import ru.yanus171.feedexfork.utils.Brightness;
 import ru.yanus171.feedexfork.utils.Eximport;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.ColorPreference;
+import ru.yanus171.feedexfork.view.StartActivityPreference;
 
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATA_FOLDER;
 
@@ -146,6 +153,85 @@ public class GeneralPrefsFragment extends PreferenceFragment implements  Prefere
             } );
 
         SetupAutomationTokenRow();
+
+        // 白い熊: every Settings sub-page in the look of the 白い熊 記事 UI page.
+        ApplySkLook( getPreferenceScreen(), true );
+    }
+
+    // -------------------------------------------------------------------------
+    // 白い熊: restyle the stock Settings sub-pages like the 白い熊 記事 UI page (black-yellow-theme
+    // skill: kxkb indent ladder, minimal row padding, pressable rows as label-wide outlined pills)
+    // without rewriting ~200 rows of general_preferences.xml. Only rows still on a platform layout
+    // (or the stock preference_category / preference_items) are touched, so every row the XML
+    // already styles on purpose — the whole curated UI page included — keeps its own layout.
+    //  - section heading (PreferenceCategory) -> preference_font_topcat (36 dp, underlined);
+    //    the first one on a page has no hairline above it
+    //  - row (checkbox, list, text entry, colour, picker …) -> preference_indented (72 dp, 2 dp
+    //    padding, no minimum height); checkboxes get the compact widget
+    //  - a row that opens another page (nested PreferenceScreen, StartActivityPreference) ->
+    //    preference_nav_pill, a thin outlined pill as wide as its label with ›
+    //  - every dialog row (text entry, list) -> its dialog in the chrome colours with pill buttons
+    // The root page (the icon list of sections) is left as it is.
+    private void ApplySkLook( PreferenceGroup group, boolean isRoot ) {
+        boolean firstCategory = true;
+        for ( int i = 0; i < group.getPreferenceCount(); i++ ) {
+            final Preference p = group.getPreference( i );
+            if ( isRoot ) {
+                if ( p instanceof PreferenceScreen && !"prefs_ui_screen".equals( p.getKey() ) )
+                    ApplySkLook( (PreferenceGroup) p, false );
+                continue;
+            }
+            if ( p instanceof PreferenceScreen ) {
+                if ( IsStockLayout( p.getLayoutResource() ) )
+                    p.setLayoutResource( R.layout.preference_nav_pill );
+                if ( !"prefs_ui_screen".equals( p.getKey() ) )
+                    ApplySkLook( (PreferenceGroup) p, false );
+                continue;
+            }
+            if ( p instanceof PreferenceCategory ) {
+                if ( IsStockLayout( p.getLayoutResource() ) )
+                    p.setLayoutResource( firstCategory ? R.layout.preference_font_topcat_first : R.layout.preference_font_topcat );
+                firstCategory = false;
+                ApplySkLook( (PreferenceGroup) p, false );
+                continue;
+            }
+            if ( IsStockLayout( p.getLayoutResource() ) )
+                p.setLayoutResource( p instanceof StartActivityPreference ? R.layout.preference_nav_pill : R.layout.preference_indented );
+            if ( p instanceof CheckBoxPreference )
+                p.setWidgetLayoutResource( R.layout.preference_widget_checkbox_compact );
+            if ( p instanceof DialogPreference )
+                HookDialogStyle( p );
+        }
+    }
+
+    // A platform layout, or one of the two stock app layouts this restyle replaces.
+    private boolean IsStockLayout( int layoutRes ) {
+        if ( layoutRes == R.layout.preference_category || layoutRes == R.layout.preference_items )
+            return true;
+        try {
+            return "android".equals( getResources().getResourcePackageName( layoutRes ) );
+        } catch ( Exception e ) {
+            return false;
+        }
+    }
+
+    // DialogPreference.onClick() shows its dialog before the click listener runs, so the listener
+    // finds it shown and can colour it; an existing listener is kept and still decides the result.
+    private void HookDialogStyle( final Preference p ) {
+        final Preference.OnPreferenceClickListener previous = p.getOnPreferenceClickListener();
+        p.setOnPreferenceClickListener( pref -> {
+            StyleEntryDialog( (DialogPreference) pref );
+            return previous != null && previous.onPreferenceClick( pref );
+        } );
+    }
+
+    private static void StyleEntryDialog( DialogPreference pref ) {
+        final android.app.Dialog dialog = pref.getDialog();
+        if ( !( dialog instanceof android.app.AlertDialog ) )
+            return;
+        Theme.TintDialog( (android.app.AlertDialog) dialog );
+        if ( pref instanceof EditTextPreference )
+            Theme.StyleEntryField( ( (EditTextPreference) pref ).getEditText() );
     }
 
     // -------------------------------------------------------------------------

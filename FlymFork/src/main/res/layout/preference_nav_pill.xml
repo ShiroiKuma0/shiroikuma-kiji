@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 白い熊: navigation pill for Settings sub-pages — a row that opens another page (a nested
+     PreferenceScreen, which cannot be subclassed, or a StartActivityPreference). Same look as
+     preference_pill: a thin outlined pill as wide as its label with ›, the explanation beneath in
+     dim gold. The list row is still what receives the click, so the summary is made clickable
+     to swallow taps on the explanation (it must not open the page). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="72dip" android:paddingEnd="16dip"
+    android:paddingTop="3dip" android:paddingBottom="3dip">
+
+    <LinearLayout
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/pill_outline_thin"
+        android:paddingStart="18dip" android:paddingEnd="16dip"
+        android:paddingTop="9dip" android:paddingBottom="9dip">
+        <ImageView android:id="@android:id/icon"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView android:id="@android:id/title"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textColor="@color/menu_pref_fg" android:textSize="16sp"/>
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:includeFontPadding="false"
+            android:text="›"
+            android:textColor="@color/menu_pref_fg" android:textSize="22sp"/>
+    </LinearLayout>
+
+    <TextView android:id="@android:id/summary"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:paddingStart="18dip" android:paddingTop="3dip"
+        android:clickable="true" android:focusable="false"
+        android:textColor="@color/menu_pref_fg_dim" android:textSize="13sp"
+        android:maxLines="6"/>
+
+    <LinearLayout android:id="@android:id/widget_frame"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:visibility="gone"/>
+</LinearLayout>

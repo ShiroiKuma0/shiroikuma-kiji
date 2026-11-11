@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 白い熊: the CheckBoxPreference widget without the platform's 48 dp minimum, so a checkbox row
+     is only as tall as its text (black-yellow-theme "Row padding — minimal"). -->
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/checkbox"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:minHeight="0dp" android:minWidth="0dp"
+    android:focusable="false" android:clickable="false"
+    android:background="@null"/>

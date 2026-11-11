@@ -246,7 +246,7 @@ public class Theme {
 		int[] buttons = { DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL };
 		for ( int which : buttons ) {
 			Button b = dialog.getButton( which );
-			if ( b != null ) b.setTextColor( fg );
+			if ( b != null ) PillButton( b, which == DialogInterface.BUTTON_POSITIVE );
 		}
 		TextView msg = dialog.findViewById( android.R.id.message );
 		if ( msg != null ) msg.setTextColor( fg );
@@ -259,11 +259,75 @@ public class Theme {
 		int[] buttons = { DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL };
 		for ( int which : buttons ) {
 			Button b = dialog.getButton( which );
-			if ( b != null ) b.setTextColor( fg );
+			if ( b != null ) PillButton( b, which == DialogInterface.BUTTON_POSITIVE );
 		}
 		TextView msg = dialog.findViewById( android.R.id.message );
 		if ( msg != null ) msg.setTextColor( fg );
 		TintDialogTitle( dialog.findViewById( GetAlertTitleId() ) );
+	}
+	// 白い熊: a dialog button as an outlined pill (black-yellow-theme skill) — never filled; the
+	// positive button is the dialog's main action (3 dp frame, bold), the others 1.25 dp, normal.
+	private static void PillButton( Button b, boolean main ) {
+		final int fg = GetChromeFgInt();
+		final float density = b.getResources().getDisplayMetrics().density;
+		final float radius = 100 * density;
+		final GradientDrawable frame = new GradientDrawable();
+		frame.setColor( Color.TRANSPARENT );
+		frame.setCornerRadius( radius );
+		frame.setStroke( Math.max( 1, Math.round( ( main ? 3f : 1.25f ) * density ) ), fg );
+		final GradientDrawable mask = new GradientDrawable();
+		mask.setColor( Color.WHITE );
+		mask.setCornerRadius( radius );
+		b.setBackground( new android.graphics.drawable.RippleDrawable(
+				android.content.res.ColorStateList.valueOf( ( fg & 0x00FFFFFF ) | 0x4D000000 ), frame, mask ) );
+		b.setTextColor( fg );
+		b.setAllCaps( false );
+		b.setTypeface( b.getTypeface(), main ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL );
+		b.setMinHeight( 0 );
+		b.setMinimumHeight( 0 );
+		b.setMinWidth( 0 );
+		b.setMinimumWidth( 0 );
+		b.setPadding( Math.round( 18 * density ), Math.round( 6 * density ), Math.round( 18 * density ), Math.round( 6 * density ) );
+		if ( b.getLayoutParams() instanceof android.view.ViewGroup.MarginLayoutParams ) {
+			final android.view.ViewGroup.MarginLayoutParams lp = (android.view.ViewGroup.MarginLayoutParams) b.getLayoutParams();
+			lp.leftMargin = lp.rightMargin = Math.round( 4 * density );
+			b.setLayoutParams( lp );
+		}
+		// The button bar (and the panel around it) clip to their bounds and keep their stock
+		// height, which cut the top and bottom of the frame off. Let the pill draw whole and give
+		// the bar room for it.
+		android.view.ViewParent parent = b.getParent();
+		for ( int level = 0; level < 3 && parent instanceof android.view.ViewGroup; level++, parent = parent.getParent() ) {
+			final android.view.ViewGroup g = (android.view.ViewGroup) parent;
+			g.setClipChildren( false );
+			g.setClipToPadding( false );
+			if ( level == 0 )
+				g.setPadding( g.getPaddingLeft(), Math.max( g.getPaddingTop(), Math.round( 6 * density ) ),
+							  g.getPaddingRight(), Math.max( g.getPaddingBottom(), Math.round( 8 * density ) ) );
+		}
+	}
+	// 白い熊: a text-entry field in the chrome colours — a rounded box with a thin yellow frame,
+	// yellow text, a yellow cursor and selection, for the Settings entry dialogs.
+	public static void StyleEntryField( android.widget.EditText edit ) {
+		if ( edit == null ) return;
+		final int fg = GetChromeFgInt();
+		final float density = edit.getResources().getDisplayMetrics().density;
+		final GradientDrawable box = new GradientDrawable();
+		box.setColor( GetChromeBgInt() );
+		box.setCornerRadius( 8 * density );
+		box.setStroke( Math.max( 1, Math.round( 1.25f * density ) ), fg );
+		edit.setBackground( box );
+		final int pad = Math.round( 10 * density );
+		edit.setPadding( pad, pad, pad, pad );
+		edit.setTextColor( fg );
+		edit.setHintTextColor( ( fg & 0x00FFFFFF ) | 0x99000000 );
+		edit.setHighlightColor( ( fg & 0x00FFFFFF ) | 0x55000000 );
+		if ( android.os.Build.VERSION.SDK_INT >= 29 ) {
+			final GradientDrawable cursor = new GradientDrawable();
+			cursor.setColor( fg );
+			cursor.setSize( Math.max( 2, Math.round( 2 * density ) ), Math.round( 20 * density ) );
+			edit.setTextCursorDrawable( cursor );
+		}
 	}
 	private static int GetAlertTitleId() {
 		return MainApplication.getContext().getResources().getIdentifier( "alertTitle", "id", "android" );

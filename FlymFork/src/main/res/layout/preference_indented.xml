@@ -4,10 +4,10 @@
      CheckBoxPreference still inflates its checkbox into the widget frame. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:minHeight="44dp"
+    android:minHeight="0dp"
     android:gravity="center_vertical"
     android:paddingStart="72dip" android:paddingEnd="16dip"
-    android:paddingTop="5dip" android:paddingBottom="5dip">
+    android:paddingTop="2dip" android:paddingBottom="2dip">
 
     <LinearLayout
         android:layout_width="0dp" android:layout_height="wrap_content"
