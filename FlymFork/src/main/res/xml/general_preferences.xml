@@ -1131,6 +1131,11 @@
             android:inputType="text|textMultiLine"
             android:summary="@string/global_class_list_to_remove_from_article_text_summary"/>
         <EditTextPreference
+            android:key="global_phrase_list_to_remove_from_article_text"
+            android:title="@string/global_phrase_list_to_remove_from_article_text"
+            android:inputType="text|textMultiLine"
+            android:summary="@string/global_phrase_list_to_remove_from_article_text_summary"/>
+        <EditTextPreference
             android:key="comments_extract_rules"
             android:inputType="text|textMultiLine"
             android:defaultValue="@string/global_class_list_to_load_article_comments_default_value"

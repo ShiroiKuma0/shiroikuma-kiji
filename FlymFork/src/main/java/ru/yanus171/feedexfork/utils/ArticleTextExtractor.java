@@ -367,6 +367,27 @@ public class ArticleTextExtractor {
                     item.remove();
             }
         }
+        RemoveElementsStartingWithPhrase(rootElement);
+    }
+
+    // 白い熊: drop every heading or paragraph whose visible text starts with one of the phrases
+    // in "Remove headings and paragraphs starting with" (PrefUtils.GetRemovePhraseList). Matching
+    // is case-insensitive and ignores leading whitespace / no-break spaces. Only these block
+    // elements are tested, so a phrase can never take out a whole article container.
+    private static void RemoveElementsStartingWithPhrase(Element rootElement) {
+        final ArrayList<String> phrases = PrefUtils.GetRemovePhraseList();
+        if (phrases.isEmpty())
+            return;
+        for (Element el : rootElement.select("h1, h2, h3, h4, h5, h6, p")) {
+            final String text = el.text().replace('\u00A0', ' ').trim().toLowerCase();
+            if (text.isEmpty())
+                continue;
+            for (String phrase : phrases)
+                if (text.startsWith(phrase)) {
+                    el.remove();
+                    break;
+                }
+        }
     }
 
     @NotNull

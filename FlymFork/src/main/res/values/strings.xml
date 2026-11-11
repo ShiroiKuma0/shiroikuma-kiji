@@ -389,6 +389,8 @@
     <string name="auto_refresh_requires_charging">Only while charging</string>
     <string name="global_class_list_to_remove_from_article_text">Remove text</string>
     <string name="global_class_list_to_remove_from_article_text_summary">Unlike others, these rules are set for all sites. Each line contains only the class name</string>
+    <string name="global_phrase_list_to_remove_from_article_text">Remove headings and paragraphs starting with</string>
+    <string name="global_phrase_list_to_remove_from_article_text_summary">For all sites. One phrase per line: a heading or paragraph whose text starts with it is left out of the article (case does not matter). Applied when the full text is downloaded.</string>
     <string name="global_date_class_list_summary">Class name per line. The elements of these classes are considered as date of article the feeds of type Web Page - Links</string>
     <string name="hide">Hide</string>
     <string name="show">Show</string>

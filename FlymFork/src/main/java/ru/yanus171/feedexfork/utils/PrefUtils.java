@@ -104,6 +104,10 @@ public class PrefUtils {
     public static final String USE_AREA_AROUND_CUTOUT = "use_area_around_cutout";
 
     public static final String GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT = "global_class_list_to_remove_from_article_text";
+    // 白い熊: headings/paragraphs whose text starts with one of these phrases (one per line) are
+    // dropped from the article text — for editor-typed promos with no class to target, e.g.
+    // aktualne.cz's bare <h2>Mohlo by vás také zajímat: <a …>…</a></h2>.
+    public static final String GLOBAL_PHRASE_LIST_TO_REMOVE_FROM_ARTICLE_TEXT = "global_phrase_list_to_remove_from_article_text";
 
     public static boolean CALCULATE_IMAGES_SIZE() {return getBoolean("calculate_images_size", false );}
 
@@ -355,6 +359,17 @@ public class PrefUtils {
             uri != LAST_READ_CONTENT_URI &&
             uri != FAVORITES_CONTENT_URI &&
             !ENTRIES_FOR_FEED_CONTENT_URI( GetExtrenalLinkFeedID() ).equals(uri);
+    }
+    /** The remove-by-phrase list: one phrase per line, trimmed, lower-cased, empty lines skipped. */
+    @NonNull
+    public static ArrayList<String> GetRemovePhraseList() {
+        final ArrayList<String> result = new ArrayList<>();
+        for (String item : TextUtils.split(PrefUtils.getString(GLOBAL_PHRASE_LIST_TO_REMOVE_FROM_ARTICLE_TEXT, ""), "\n")) {
+            final String phrase = item.replace('\u00A0', ' ').trim().toLowerCase();
+            if (!phrase.isEmpty())
+                result.add(phrase);
+        }
+        return result;
     }
     @NonNull
     public static ArrayList<String> GetRemoveClassList() {
