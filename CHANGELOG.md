@@ -9,6 +9,38 @@ Each fork release names the upstream release it is built on. The build counter i
 
 ---
 
+## 白い熊 記事 1.1.35+012 — 2026-11-11
+
+Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
+(`1.1.35+010` was an interrupted build and `+011` an unreleased test build; everything is included here.)
+
+### Article text
+
+- **Remove headings and paragraphs by their opening words.** New setting under Settings → Advanced →
+  Content extract rules, right below “Remove text”: one phrase per line, and every heading or
+  paragraph whose text starts with one of them is left out of the article, whatever the case. It
+  catches promos that have no class to remove — aktualne.cz’s editor-typed “Mohlo by vás také
+  zajímat: …” heading goes together with its link. Like the other rules it applies when the full
+  text is downloaded, and it travels in backups.
+- **End-of-article actions are outlined pills.** “Get full text”, “Show original text”, “Reload full
+  text” and “Go back” were white text on a coloured slab; they are now thin outlined pills in the
+  article’s text colour.
+
+### Settings
+
+- **Every Settings page in the look of the 白い熊 記事 UI page.** Section headings are bold and
+  underlined, rows sit at the same indent with minimal padding and compact checkboxes, and rows that
+  open another page are outlined pills with a ›, as wide as their label. The main list of sections
+  is unchanged.
+- **Black-and-yellow entry dialogs.** The text-entry and choice dialogs have the black box with a
+  rounded yellow frame, the text field its own yellow-framed box with a yellow cursor, and OK /
+  Cancel are pills — OK thick and bold, Cancel thin. The pill buttons apply to the app’s other
+  black-and-yellow dialogs too.
+- **Pills hug their label.** The Export / Import pill on the UI page is now only as wide as its
+  label, following the shared theme rule.
+
+---
+
 ## 白い熊 記事 1.1.35+009 — 2026-11-08
 
 Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
