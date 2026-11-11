@@ -256,7 +256,9 @@ public class WebEntryContent {
                 + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "}\n "
                 + ".button-section p {font-family: \"MainFont\"; font-size: " + mainFontSize + "; margin: 0.1cm 0 0.2cm 0}\n "
                 + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}\n"
-                + ".button-section input, .button-section a {font-family: \"MainFont\"; font-size: " + mainFontSize + "; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm}\n "
+                // 白い熊: the end-of-article actions are outlined pills in the text colour (black-yellow-theme
+                // skill — never a filled slab, no white text): 1.25 dp frame, background showing through.
+                + ".button-section input, .button-section a {font-family: \"MainFont\"; font-size: " + mainFontSize + "; color: " + Theme.GetTextColor() + "; background-color: transparent; -webkit-appearance: none; text-decoration: none; border: 1.25px solid " + Theme.GetTextColor() + "; border-radius: 100px; padding: 0.15em 0.9em; margin: 0.2cm}\n "
                 + "." + TAG_BUTTON_CLASS + ", ." + TAG_BUTTON_CLASS_CATEGORY + ", ." + TAG_BUTTON_CLASS_DATE + ", ." + TAG_BUTTON_CLASS_CATEGORY + ", ." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + ", ." + TAG_BUTTON_CLASS_HIDDEN
                 + " { font-size: " + mainFontSize + "; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm}\n "
                 + "." + TAG_BUTTON_CLASS + " i { background-color: " + Theme.GetToolBarColor() + "}\n "
