@@ -9,6 +9,28 @@ Each fork release names the upstream release it is built on. The build counter i
 
 ---
 
+## 白い熊 記事 1.1.35+015 — 2026-11-12
+
+Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
+(`1.1.35+013` and `+014` were test builds; everything in them is included here.)
+
+### Article text
+
+- **The lead paragraph is no longer lost.** News sites such as aktualne.cz and lidovky.cz put the
+  article’s lead (perex) in the header, beside the body that the full text is taken from, so the
+  article started at its second paragraph. The page’s own description is now matched against the
+  header, and when it is found there the lead is placed at the top of the article. Nothing is added
+  when the page has no matching paragraph.
+- **Mafra’s in-article ad boxes are removed.** idnes.cz, lidovky.cz and expres.cz insert promos such
+  as the “Rodinné auto” contest box into the article text in an ad slot with no class to hide; every
+  such slot is now dropped from the full text.
+- **Embedded videos fit the screen.** A video in an article was drawn at its poster’s native size
+  (about 1920 px wide) and ran off the screen; it now takes the screen width with proportional height.
+
+Articles whose full text was downloaded earlier pick these up with “Reload full text”.
+
+---
+
 ## 白い熊 記事 1.1.35+012 — 2026-11-11
 
 Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.

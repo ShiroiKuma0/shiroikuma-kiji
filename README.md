@@ -9,7 +9,7 @@ A personal, rebranded Android RSS reader — a fork of
 > The new package id installs as a new app; move your feeds, articles and settings across with the
 > Export/Import panel — backups written under the old name import unchanged.
 
-**Latest release:** [`1.1.35+012`](../../releases/latest) · arm64 (universal) · Android 4.0+ · F-Droid flavor (no GMS).
+**Latest release:** [`1.1.35+015`](../../releases/latest) · arm64 (universal) · Android 4.0+ · F-Droid flavor (no GMS).
 
 ## What this fork adds on top of Handy News Reader
 
@@ -76,6 +76,9 @@ A personal, rebranded Android RSS reader — a fork of
   the always-visible ★ in the reading toolbar.
 - **Paywall bypass for Mafra sites** — articles from lidovky.cz and idnes.cz load their full text past
   the pay-or-consent wall (fetched with a Googlebot user agent).
+- **Cleaner full text** — the lead paragraph that news sites keep in the article header (aktualne.cz,
+  lidovky.cz, …) is brought back to the top of the article, Mafra’s in-article ad boxes are dropped,
+  and embedded videos fit the screen width.
 - **Tracks upstream** — regularly rebased onto the latest Handy News Reader development, taking
   untagged `master` bumps too rather than waiting for a release. Currently on **`1.1.35`** (untagged
   master), which brings one shared HTTP connection for all feeds, refreshes that can no longer stall,
