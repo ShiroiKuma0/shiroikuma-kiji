@@ -738,6 +738,9 @@ public class ArticleTextExtractor {
         if ( mobilize == MobilizeType.Yes )
             removeSelectsAndOptions(doc);
         removeScriptsAndStyles(doc, withScripts);
+        // 白い熊: Mafra (idnes.cz, lidovky.cz, expres.cz) marks its in-article ad slots with
+        // data-redistribute="ad" — a class-less wrapper the class-removal list cannot reach.
+        doc.select( "[data-redistribute=ad]" ).remove();
         SaveContentStepToFile( doc, "after prepareDocument" );
     }
 

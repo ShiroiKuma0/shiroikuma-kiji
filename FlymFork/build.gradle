@@ -13,8 +13,8 @@ android {
         applicationId 'shiroikuma.kiji'
         minSdkVersion 14
         targetSdkVersion 31
-        versionCode 3720012
-        versionName '1.1.35+012'
+        versionCode 3720015
+        versionName '1.1.35+015'
         multiDexEnabled true
     }
 
