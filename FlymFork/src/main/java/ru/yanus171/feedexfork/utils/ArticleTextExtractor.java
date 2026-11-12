@@ -229,6 +229,8 @@ public class ArticleTextExtractor {
         if ( rootElement == null )
             rootElement = doc;
 
+        if ( mobilize == MobilizeType.Yes && rootElement != doc )
+            PrependLeadParagraph( doc, rootElement );
 
         SaveContentStepToFile( doc, "before remove title" );
 
@@ -788,6 +790,49 @@ public class ArticleTextExtractor {
         Elements noscripts = doc.getElementsByTag("option");
         for (Element item : noscripts)
             item.remove();
+    }
+
+    // 白い熊: many news sites (aktualne.cz among them) put the lead paragraph — the perex — in the
+    // article header, beside the body rather than inside it, so the body picked as the text root
+    // loses it. The page's <meta name="description"> normally carries that same text: if an element
+    // outside the root holds exactly it, put a copy at the top of the root. Nothing is added when no
+    // element matches, so a generic or truncated description never gets injected on its own.
+    private static void PrependLeadParagraph( Element doc, Element rootElement ) {
+        String description = null;
+        for ( String query: new String[] { "meta[name=description]", "meta[property=og:description]", "meta[name=twitter:description]" } ) {
+            Element meta = doc.selectFirst( query );
+            if ( meta != null && NormalizeSpaces( meta.attr( "content" ) ).length() >= 40 ) {
+                description = NormalizeSpaces( meta.attr( "content" ) );
+                break;
+            }
+        }
+        if ( description == null || NormalizeSpaces( rootElement.text() ).contains( description ) )
+            return;
+        Element lead = null;
+        for ( Element el : doc.select( "body" ).select( "*" ) ) {
+            if ( el == rootElement || !NormalizeSpaces( el.text() ).equals( description ) )
+                continue;
+            if ( IsAncestorOf( el, rootElement ) || IsAncestorOf( rootElement, el ) )
+                continue;
+            // A wrapper and the paragraph inside it share the text: keep the innermost one.
+            if ( lead == null || IsAncestorOf( lead, el ) )
+                lead = el;
+        }
+        if ( lead == null )
+            return;
+        Element p = new Element( "p" ).addClass( "lead" );
+        p.html( lead.html() );
+        rootElement.prependChild( p );
+        Dog.v( "PrependLeadParagraph: " + description );
+    }
+    private static boolean IsAncestorOf( Element ancestor, Element el ) {
+        for ( Element parent = el.parent(); parent != null; parent = parent.parent() )
+            if ( parent == ancestor )
+                return true;
+        return false;
+    }
+    private static String NormalizeSpaces( String s ) {
+        return s.replace( ' ', ' ' ).replaceAll( "\\s+", " " ).trim();
     }
 
     /**
