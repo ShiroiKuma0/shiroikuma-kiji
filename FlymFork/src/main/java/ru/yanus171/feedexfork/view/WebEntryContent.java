@@ -232,6 +232,9 @@ public class WebEntryContent {
                 + "h1 {color: inherit; text-decoration: none}\n"
                 + "img {" + getImgStyle() + "}\n"
                 + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}\n"
+                // 白い熊: the sanitiser strips a site's inline video sizing, so without this a
+                // <video> takes its poster's native size (1920 px) and runs off the screen.
+                + "video {display: block; width: 100%; max-width: 100%; height: auto;}\n"
                 + "pre {white-space: pre-wrap;}\n "
                 + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em}\n "
                 + "td {font-weight: " + getFontBold() + "; text-align:" + textAlign + "}\n "
