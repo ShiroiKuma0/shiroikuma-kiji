@@ -837,4 +837,6 @@
     <string name="settings_font_row_font">Font</string>
     <string name="settings_font_row_weight">weight</string>
     <string name="settings_font_row_size">size</string>
+    <string name="request_jpeg">Request pictures as JPEG</string>
+    <string name="request_jpeg_summary">Asks image servers that take the format in the address (fm=png, as Deník N’s does) for a much smaller JPEG, so large pictures and thumbnails download.</string>
 </resources>

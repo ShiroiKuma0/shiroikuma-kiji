@@ -78,6 +78,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
+import ru.yanus171.feedexfork.utils.FeedImageFormat;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 
@@ -95,6 +96,7 @@ public class RssAtomParser extends DefaultHandler {
     private static final String TAG_DESCRIPTION = "description";
     private static final String TAG_MEDIA_DESCRIPTION = "media:description";
     private static final String TAG_MEDIA_THUMBNAIL = "media:thumbnail";
+    private static final String TAG_THUMBNAIL = "thumbnail";
     private static final String TAG_CONTENT = "content";
     private static final String TAG_CONTENT_ENCODED = "content:encoded>";
     private static final String TAG_MEDIA_CONTENT = "media:content";
@@ -155,6 +157,7 @@ public class RssAtomParser extends DefaultHandler {
 
     private final Date mRealLastUpdateDate;
     private final String mId;
+    private final boolean mRequestJpeg; // 白い熊: the feed's "Request pictures as JPEG" switch
     private final Uri mFeedEntriesUri;
     private final String mFeedName;
     private final String mFeedBaseUrl;
@@ -205,6 +208,7 @@ public class RssAtomParser extends DefaultHandler {
         mRealLastUpdateDate = realLastUpdateDate;
         mNewRealLastUpdate = realLastUpdateDate.getTime();
         mId = id;
+        mRequestJpeg = FeedImageFormat.isOn( id );
         mFeedName = feedName;
         mFeedEntriesUri = EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(id);
         mRetrieveFullText = retrieveFullText;
@@ -225,6 +229,7 @@ public class RssAtomParser extends DefaultHandler {
             mDescription = null;
             mDescriptionTemp = null;
             mEntryLink = null;
+            mMainImageUrl = null;
             mCategoryList.clear();
             mTmpCategory = new StringBuilder();
 
@@ -275,6 +280,19 @@ public class RssAtomParser extends DefaultHandler {
             }
         } else if ( TAG_DESCRIPTION.equals(localName) || TAG_MEDIA_DESCRIPTION.equals(qName)
                 || TAG_CONTENT.equals(localName) || TAG_MEDIA_CONTENT.equals(qName) || TAG_CONTENT_ENCODED.equals(qName) ) {
+            // 白い熊: with the "media:" prefix stripped by CleanRSS, <media:content url="…"/> arrives here as
+            // an empty <content>; its picture was lost (Respekt carries its picture only there and as a raw
+            // <img> element after the description's CDATA, which SAX drops). Take an image url as the main
+            // image; a video or audio media:content (medium / type says so) is left alone.
+            if ( mEntryTagEntered && mMainImageUrl == null && TAG_CONTENT.equals( localName ) ) {
+                final String mediaUrl = attributes.getValue( "", ATTRIBUTE_URL );
+                final String medium = attributes.getValue( "", "medium" );
+                final String type = attributes.getValue( "", ATTRIBUTE_TYPE );
+                if ( mediaUrl != null && !mediaUrl.isEmpty()
+                     && ( medium == null || "image".equalsIgnoreCase( medium ) )
+                     && ( type == null || type.startsWith( "image/" ) ) )
+                    mMainImageUrl = mediaUrl;
+            }
             mDescriptionTagEntered = true;
             mDescriptionTemp = new StringBuilder();
         } else if (TAG_SUMMARY.equals(localName)) {
@@ -282,7 +300,10 @@ public class RssAtomParser extends DefaultHandler {
                 mDescriptionTagEntered = true;
                 mDescriptionTemp = new StringBuilder();
             }
-        } else if ( TAG_MEDIA_THUMBNAIL.equals( qName ) ) {
+        } else if ( TAG_MEDIA_THUMBNAIL.equals( qName ) || ( mEntryTagEntered && TAG_THUMBNAIL.equals( localName ) ) ) {
+            // 白い熊: CleanRSS strips every namespace prefix before parsing ("<media:thumbnail" becomes
+            // "<thumbnail"), so the qName test above never matched and feeds that carry their picture
+            // only in media:thumbnail (MMA Weekly) got no main image, no thumbnail and no image in the article.
             mMainImageUrl = attributes.getValue( "", "url" );
         } else if (TAG_PUBDATE.equals(localName)) {
             mPubDateTagEntered = true;
@@ -322,6 +343,10 @@ public class RssAtomParser extends DefaultHandler {
     }
 
     private void startEnclosure(Attributes attributes, String url) {
+        // 白い熊: an image enclosure is the item's picture when the feed gives no media:thumbnail.
+        final String enclosureType = attributes.getValue("", ATTRIBUTE_TYPE);
+        if ( mEntryTagEntered && mMainImageUrl == null && url != null && enclosureType != null && enclosureType.startsWith( "image/" ) )
+            mMainImageUrl = url;
         if (mEnclosure == null && url != null) { // fetch the first enclosure only
             mEnclosure = new StringBuilder(url);
             mEnclosure.append(Constants.ENCLOSURE_SEPARATOR);
@@ -436,21 +461,26 @@ public class RssAtomParser extends DefaultHandler {
                     values.put(EntryColumns.TITLE, improvedTitle);
 
                     String improvedContent = null;
-                    String mainImageUrl = mMainImageUrl;
+                    String mainImageUrl = mRequestJpeg ? FeedImageFormat.toJpeg( mMainImageUrl ) : mMainImageUrl;
                     ArrayList<String> imagesUrls = null;
                     if (mDescription != null) {
                         // Improve the description
                         improvedContent = HtmlUtils.improveHtmlContent(mDescription.toString(), entryLinkString, mFilters, mCategoryList, ArticleTextExtractor.MobilizeType.Yes, true);
+                        if ( mRequestJpeg )
+                            improvedContent = FeedImageFormat.toJpeg( improvedContent );
 
                         if ( improvedTitle.isEmpty() ) {
                             improvedTitle = HtmlUtils.extractTitle(improvedContent);
                             values.put(EntryColumns.TITLE, improvedTitle);
                         }
                         imagesUrls = new ArrayList<>();
+                        // 白い熊: the feed's own picture (media:thumbnail / image enclosure) is only a fallback for
+                        // items whose text has no image; otherwise it would duplicate the text's lead picture.
+                        if ( mainImageUrl != null && HtmlUtils.getMainImageURL(improvedContent) != null )
+                            mainImageUrl = null;
                         if ( mainImageUrl != null ) {
                             imagesUrls.add(mainImageUrl);
-                            if ( !improvedContent.contains( mMainImageUrl ) )
-                                improvedContent = String.format( "<img src=\"%s\" />", mMainImageUrl ) + improvedContent;
+                            improvedContent = String.format( "<img src=\"%s\" />", mainImageUrl ) + improvedContent;
                         }
                         if (mFetchImages) {
                             //imagesUrls = HtmlUtils.getImageURLs(improvedContent);

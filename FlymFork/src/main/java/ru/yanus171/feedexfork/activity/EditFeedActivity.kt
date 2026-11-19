@@ -54,6 +54,7 @@
 package ru.yanus171.feedexfork.activity
 
 import ru.yanus171.feedexfork.utils.UiUtils
+import ru.yanus171.feedexfork.utils.FeedImageFormat
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -172,6 +173,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
     private lateinit var mNextPageMaxCount: EditText
     private lateinit var mOneWebPageLayout: LinearLayout
     private lateinit var mIsAutoSetAsRead: CheckBox
+    private lateinit var mRequestJpegCb: CheckBox
 
     private lateinit var mTabHost: TabHost
     private lateinit var mNameEditText: EditText
@@ -205,6 +207,8 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
         mIsAutoImageLoadCb = SetupSmallTextView(R.id.auto_image_load) as CheckBox
         mIsAutoSetAsRead = SetupSmallTextView(R.id.auto_set_as_read) as CheckBox
         mIsAutoSetAsRead.isChecked = false
+        mRequestJpegCb = SetupSmallTextView(R.id.request_jpeg) as CheckBox
+        mRequestJpegCb.isChecked = false
         mFiltersListView = findViewById(android.R.id.list)
         mGroupSpinner = findViewById(R.id.spin_group)
 
@@ -348,6 +352,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
                             }
                         }
                         if (jsonOptions.has(AUTO_SET_AS_READ) && jsonOptions.getBoolean(AUTO_SET_AS_READ)) mIsAutoSetAsRead.isChecked = true
+                        mRequestJpegCb.isChecked = jsonOptions.optBoolean(FeedImageFormat.REQUEST_JPEG, false)
                         mNextPageClassName.setText(jsonOptions.getString(FetcherService.NEXT_PAGE_URL_CLASS_NAME))
                         mNextPageMaxCount.setText(jsonOptions.getString(FetcherService.NEXT_PAGE_MAX_COUNT))
                         if (jsonOptions.has(FetcherService.IS_ONE_WEB_PAGE) && jsonOptions.getBoolean(FetcherService.IS_ONE_WEB_PAGE)) {
@@ -524,6 +529,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
                 jsonOptions.put(FetcherService.NEXT_PAGE_URL_CLASS_NAME, mNextPageClassName.text.toString())
                 jsonOptions.put(FetcherService.NEXT_PAGE_MAX_COUNT, mNextPageMaxCount.text.toString())
                 jsonOptions.put(AUTO_SET_AS_READ, mIsAutoSetAsRead.isChecked)
+                jsonOptions.put(FeedImageFormat.REQUEST_JPEG, mRequestJpegCb.isChecked)
                 if (mLoadTypeRG.checkedRadioButtonId == R.id.rbOneWebPage) {
                     jsonOptions.put(ONE_WEB_PAGE_ARTICLE_CLASS_NAME, mOneWebPageArticleClassName.text.toString())
                     jsonOptions.put(ONE_WEB_PAGE_URL_CLASS_NAME, mOneWebPageUrlClassName.text.toString())

@@ -185,6 +185,7 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.provider.FeedData.TaskColumns;
+import ru.yanus171.feedexfork.utils.FeedImageFormat;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Connection;
 import ru.yanus171.feedexfork.utils.DebugApp;
@@ -866,6 +867,9 @@ public class FetcherService extends IntentService {
                                     entryCursor.getInt(entryCursor.getColumnIndex(EntryColumns.IS_WITH_TABLES)) == 1,
                                     withScripts);
                             Status().ChangeProgress("");
+                            // 白い熊: the feed's "Request pictures as JPEG" switch (Deník N's 3 MB PNG og:image).
+                            if (mobilizedHtml != null && isOptionsAttrOn(entryCursor, FeedImageFormat.REQUEST_JPEG))
+                                mobilizedHtml = FeedImageFormat.toJpeg(mobilizedHtml);
 
                             if (mobilizedHtml != null) {
 
