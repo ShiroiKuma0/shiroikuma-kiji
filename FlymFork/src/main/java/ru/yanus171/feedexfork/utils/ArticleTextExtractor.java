@@ -240,7 +240,7 @@ public class ArticleTextExtractor {
         StringBuilder ret = new StringBuilder(rootElement.toString());
         SaveContentStepToFile( ret, "after toString" );
 
-        if (ogImage != null && !ret.toString().contains(ogImage)) {
+        if (ogImage != null && !ContainsImage( ret.toString(), ogImage )) {
             ret.insert(0, "<img src=\"" + ogImage + "\"><br>\n");
         }
 
@@ -741,6 +741,42 @@ public class ArticleTextExtractor {
         // 白い熊: Mafra (idnes.cz, lidovky.cz, expres.cz) marks its in-article ad slots with
         // data-redistribute="ad" — a class-less wrapper the class-removal list cannot reach.
         doc.select( "[data-redistribute=ad]" ).remove();
+        // 白い熊: echo24.cz places a related-article card (aside.articleNewDetail__articleInner)
+        // and an e-shop banner (aside.js-nonSeznam) inside the article body block.
+        doc.select( "aside.articleNewDetail__articleInner, aside.js-nonSeznam" ).remove();
+        // 白い熊: echo24.cz ships the full text of a Týdeník article in a hidden block (div.js-cso) near the
+        // end of the page, which is what gets extracted; the photo caption (often a pull quote) and the
+        // author line sit above it in article.articleNewDetail and were lost. Copy both into the block.
+        final Element echoFullText = doc.selectFirst( "div.js-cso" );
+        final Element echoArticle = doc.selectFirst( "article.articleNewDetail" );
+        if ( echoFullText != null && echoArticle != null ) {
+            final StringBuilder authors = new StringBuilder();
+            for ( Element a : echoArticle.select( ".articleNewDetail__info a[rel=author]" ) ) {
+                if ( a.text().trim().isEmpty() )
+                    continue;
+                if ( authors.length() > 0 )
+                    authors.append( ", " );
+                authors.append( a.text().trim() );
+            }
+            if ( authors.length() > 0 )
+                echoFullText.prependElement( "p" ).addClass( "author" ).appendElement( "i" ).text( authors.toString() );
+            final Element caption = echoArticle.selectFirst( "figure.articleNewDetail__img figcaption" );
+            if ( caption != null && !caption.text().trim().isEmpty() )
+                echoFullText.prependElement( "p" ).addClass( "caption" ).text( caption.text().trim() );
+        }
+        // 白い熊: rlsbb.to puts theme badges (the 37×11 "P2P" image) in the post header, ahead of
+        // the poster, so the badge became the article's main image and thumbnail.
+        doc.select( "img[src*=/wp-content/themes/rlsbb/images/]" ).remove();
+        // 白い熊: respekt.cz (Next.js CSS-module class names) — the "↓ INZERCE" banner slots inside the
+        // body, the subscription box after it, the "Mohlo by vás zajímat" related-article grid and the
+        // section grid below it with its "Načíst další články" (load more) button.
+        doc.select( "[class*='Ad-module-scss-module__'], [class*='ArticlePaywall-module-scss-module__'], "
+                    + "[class*='ArticlesList-module-scss-module__'], [class*='SectionArticlesGrid-module-scss-module__']" ).remove();
+        // 白い熊: respekt.cz also carries every article picture twice — the screen copy and a print-only
+        // copy (ArticlePicture-module…__imagePrint, hidden on screen by the site's CSS) — so each showed twice.
+        doc.select( "[class*='ArticlePicture-module-scss-module__'][class*='__imagePrint']" ).remove();
+        // 白い熊: respekt.cz's "Chcete nás vidět v Google nahoře?" promotion box above the first paragraph.
+        doc.select( "div.google-pref-box" ).remove();
         SaveContentStepToFile( doc, "after prepareDocument" );
     }
 
@@ -828,6 +864,31 @@ public class ArticleTextExtractor {
         rootElement.prependChild( p );
         Dog.v( "PrependLeadParagraph: " + description );
     }
+    // 白い熊: is the og:image already in the article? The exact-string test missed it whenever the address
+    // carries a query: the HTML holds "&amp;" where og:image has "&", and image CDNs give the same picture a
+    // different size/crop query in each place (Respekt: og:image "…/x.jpeg?width=1200&height=630&draw=logo",
+    // the cover photo "…/x.jpeg?width=3840"), so the picture was prepended a second time. Compare without
+    // the query when the path names a file (its last segment has an extension); otherwise exact only.
+    static boolean ContainsImage( String html, String imageUrl ) {
+        if ( html.contains( imageUrl ) || html.contains( imageUrl.replace( "&", "&amp;" ) ) )
+            return true;
+        int cut = imageUrl.indexOf( '?' );
+        final int hash = imageUrl.indexOf( '#' );
+        if ( hash >= 0 && ( cut < 0 || hash < cut ) )
+            cut = hash;
+        if ( cut <= 0 )
+            return false;
+        String base = imageUrl.substring( 0, cut );
+        final String lastSegment = base.substring( base.lastIndexOf( '/' ) + 1 );
+        if ( !lastSegment.contains( "." ) || lastSegment.length() < 5 )
+            return false;
+        // match regardless of scheme ("https://" vs "//")
+        final int scheme = base.indexOf( "//" );
+        if ( scheme >= 0 )
+            base = base.substring( scheme + 2 );
+        return html.contains( base );
+    }
+
     private static boolean IsAncestorOf( Element ancestor, Element el ) {
         for ( Element parent = el.parent(); parent != null; parent = parent.parent() )
             if ( parent == ancestor )
