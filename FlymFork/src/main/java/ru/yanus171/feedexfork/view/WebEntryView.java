@@ -441,9 +441,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     public static void ShowLinkMenu(String url, String title, Context context) {
         final MenuItem itemTitle = new MenuItem(url);
-        final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.cup_new_load_now, new Intent(context, EntryActivity.class).setData(Uri.parse(url)));
-        final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.cup_new_load_later, new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)));
-        final MenuItem itemLaterInFavorities = new MenuItem(R.string.loadLinkLaterStarred, R.drawable.cup_new_load_later_star, (_1, _2) ->
+        final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.ic_receipt, new Intent(context, EntryActivity.class).setData(Uri.parse(url))).connect().opens();
+        final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.clock_white, new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url))).connect();
+        final MenuItem itemLaterInFavorities = new MenuItem(R.string.loadLinkLaterStarred, R.drawable.ic_star, (_1, _2) ->
                 LabelVoc.INSTANCE.showDialog(context, R.string.article_labels_setup_title, false, new HashSet<>(), null, (checkedLabels) -> {
                     Intent intent_ = new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)).putExtra(FetcherService.EXTRA_STAR, true);
                     ArrayList<String> list = new ArrayList<>();
@@ -452,11 +452,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                     intent_.putStringArrayListExtra(EXTRA_LABEL_ID_LIST, list);
                     context.startActivity(intent_);
                     return null;
-                }));
-        final MenuItem itemOpenLink = new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(url));
-        final MenuItem itemShare = new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, Intent.createChooser(
+                })).mark().opens();
+        final MenuItem itemOpenLink = new MenuItem(R.string.open_link, R.drawable.ic_open_in_browser, GetShowInBrowserIntent(url)).opens();
+        final MenuItem itemShare = new MenuItem(R.string.menu_share, R.drawable.ic_share, Intent.createChooser(
                 new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, url)
-                        .setType(Constants.MIMETYPE_TEXT_PLAIN), context.getString(R.string.menu_share)));
+                        .setType(Constants.MIMETYPE_TEXT_PLAIN), context.getString(R.string.menu_share))).share().opens();
         final MenuItem[] items = {itemTitle, itemReadNow, itemLater, itemLaterInFavorities, itemOpenLink, itemShare};
         final MenuItem[] itemsNoRead = {itemTitle, itemOpenLink, itemShare};
 
@@ -498,12 +498,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     public static void ShowImageMenu(String url, String title, Context context) {
         final MenuItem[] items = {
-                new MenuItem(R.string.menu_share, android.R.drawable.ic_menu_share, (_1, _2) -> ShareImage(url, context)),
-                new MenuItem(R.string.copy_to_downloads, android.R.drawable.ic_menu_save, (_1, _2) -> {
+                new MenuItem(R.string.menu_share, R.drawable.ic_share, (_1, _2) -> ShareImage(url, context)).share().opens(),
+                new MenuItem(R.string.copy_to_downloads, R.drawable.ic_file_download, (_1, _2) -> {
                     File file = new File(url.replace(Constants.FILE_SCHEME, ""));
                     FileUtils.INSTANCE.copyFileToDownload(file.getAbsolutePath(), getDestFileName(title), true);
-                }),
-                new MenuItem(R.string.open_image, android.R.drawable.ic_menu_view, (_1, _2) -> OpenImage(url, context))
+                }).share(),
+                new MenuItem(R.string.open_image, R.drawable.ic_photo_size_select_actual, (_1, _2) -> OpenImage(url, context)).opens()
         };
         ShowMenu(items, null, context);
     }

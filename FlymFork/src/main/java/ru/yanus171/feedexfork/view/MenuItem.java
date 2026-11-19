@@ -1,5 +1,6 @@
 package ru.yanus171.feedexfork.view;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import android.app.AlertDialog;
@@ -7,22 +8,21 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.content.ContextCompat;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
@@ -37,25 +37,44 @@ public class MenuItem {
     public final int icon;
     public final Intent mIntent;
     public final DialogInterface.OnClickListener mListener;
+    // 白い熊: how the row is drawn (black-yellow-theme skill, “Menus”)
+    private final boolean mHeader;
+    private boolean mOpens = false;
+    private MenuPills.Role mRole = MenuPills.Role.VIEW;
 
     public MenuItem(int textID, Integer icon, DialogInterface.OnClickListener listener) {
         this.text = MainApplication.getContext().getString(textID);
         this.icon = icon;
         this.mListener = listener;
         this.mIntent = null;
+        this.mHeader = false;
     }
     public MenuItem(int textID, Integer icon, Intent intent ) {
         this.text = MainApplication.getContext().getString(textID);
         this.icon = icon;
         this.mListener = null;
         this.mIntent = intent;
+        this.mHeader = false;
     }
+    // The plain title line a menu opens with
     MenuItem(String text ) {
         this.text = text;
         this.icon = 0;
         this.mListener = null;
         this.mIntent = null;
+        this.mHeader = true;
     }
+
+    /** The row opens something (a screen, a dialog, a picker, the browser): it gets a ›. */
+    public MenuItem opens() { mOpens = true; return this; }
+    /** The row copies, shares or exports: its icon takes the share colour. */
+    public MenuItem share() { mRole = MenuPills.Role.SHARE; return this; }
+    /** The row deletes: frame, icon and label take the warning colour. */
+    public MenuItem destructive() { mRole = MenuPills.Role.DELETE; return this; }
+    /** The row loads from the network: its icon takes the connect colour. */
+    public MenuItem connect() { mRole = MenuPills.Role.CONNECT; return this; }
+    /** The row marks, stars or labels: its icon takes the mark colour. */
+    public MenuItem mark() { mRole = MenuPills.Role.MARK; return this; }
 
     @Override
     public String toString() {
@@ -66,43 +85,27 @@ public class MenuItem {
         ShowMenu(items, title, context, null );
     }
     public static void ShowMenu(MenuItem[] items, String title, Context context, LoadTitleInterface loadTitleAction) {
-        final int textColor = Color.parseColor( Theme.GetTextColor() );
-        final int iconSize = getIconSize(context);
+        // A list of pure choices without any icon keeps no icon column
+        boolean anyIcon = false;
+        for ( MenuItem item : items )
+            if ( !item.mHeader && item.icon > 0 )
+                anyIcon = true;
+        final boolean iconColumn = anyIcon;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setAdapter(new ArrayAdapter<MenuItem>(
             context,
             android.R.layout.select_dialog_item,
             android.R.id.text1,
             items) {
+            @Override
+            public boolean areAllItemsEnabled() { return false; }
+            @Override
+            public boolean isEnabled(int position) { return !items[position].mHeader; }
+            @Override
+            public int getViewTypeCount() { return 1; }
             @NonNull
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                //Use super class to create the View
-                View v = super.getView(position, convertView, parent);
-                TextView tv = SetupTextView(v, android.R.id.text1);
-                tv.setTextColor( textColor );
-                if (items[position].icon > 0) {
-                    //Put the image on the TextView
-                    Drawable dr = context.getResources().getDrawable(items[position].icon);
-                    if ( dr instanceof BitmapDrawable) {
-                        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-                        Drawable d = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(bitmap, iconSize, iconSize, true));
-                        d.setBounds(0, 0, iconSize, iconSize);
-                        tv.setCompoundDrawables(d, null, null, null);
-                    } else if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && dr instanceof VectorDrawable) {
-                        VectorDrawable vd = (VectorDrawable) dr;
-                        DrawableCompat.setTint(vd, textColor );
-                        vd.setBounds(0, 0, iconSize, iconSize);
-                        tv.setCompoundDrawables(vd, null, null, null);
-                    }
-                    //Add margin between image and text (support various screen densities)
-                    int dp5 = (int) (5 * context.getResources().getDisplayMetrics().density + 0.5f);
-                    tv.setCompoundDrawablePadding(dp5);
-                } else {
-                    tv = SetupSmallTextView(v, android.R.id.text1);
-                    tv.setGravity( Gravity.CENTER );
-                    tv.setCompoundDrawables(null, null, null, null);
-                }
-                return v;
+                return createRowView(context, items[position], iconColumn);
             }
         }, (dialogInterface, i) -> {
             try {
@@ -115,11 +118,82 @@ public class MenuItem {
             }
         });
         if ( title != null ) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-//                view.setTextAlignment( View.TEXT_ALIGNMENT_CENTER );
             builder.setCustomTitle( createDialogTitleView(title, context, loadTitleAction) );
         }
-        Theme.TintDialog( builder.show() );
+        final AlertDialog dialog = builder.show();
+        // The pill carries the ripple; the list's rectangular highlight would paint over its round ends
+        if ( dialog.getListView() != null ) {
+            dialog.getListView().setSelector( new ColorDrawable( Color.TRANSPARENT ) );
+            dialog.getListView().setDivider( null );
+        }
+        Theme.TintDialog( dialog );
+    }
+
+    // 白い熊: a row of a dialog menu. An action row is an outlined pill as wide as the menu, its icon
+    // inside at the left in the colour of what it does, a › at the right when it opens something;
+    // a destructive row lends the warning colour to frame, icon and label. The title line stays plain.
+    @NonNull
+    private static View createRowView(Context context, MenuItem item, boolean iconColumn) {
+        final float density = context.getResources().getDisplayMetrics().density;
+        if ( item.mHeader ) {
+            final TextView tv = new TextView(context);
+            SetupSmallTextView( tv );
+            tv.setTextColor( MenuPills.accent() );
+            tv.setGravity( Gravity.CENTER );
+            tv.setText( item.text );
+            final int pad = Math.round( 12 * density );
+            tv.setPadding( pad, Math.round( 4 * density ), pad, Math.round( 8 * density ) );
+            return tv;
+        }
+        final boolean destructive = item.mRole == MenuPills.Role.DELETE;
+        final int color = destructive ? MenuPills.warning() : MenuPills.accent();
+        final int iconColor = MenuPills.roleColor( item.mRole );
+
+        final FrameLayout wrap = new FrameLayout( context );
+        final int h = Math.round( 8 * density ), v = Math.round( MenuPills.PILL_MARGIN_DP * density );
+        wrap.setPadding( h, v, h, v );
+
+        final LinearLayout pill = new LinearLayout( context );
+        pill.setOrientation( LinearLayout.HORIZONTAL );
+        pill.setGravity( Gravity.CENTER_VERTICAL );
+        pill.setDuplicateParentStateEnabled( true );
+        pill.setBackground( MenuPills.pill( context, color ) );
+        pill.setMinimumHeight( Math.round( 48 * density ) );
+        pill.setPadding( Math.round( 14 * density ), Math.round( 6 * density ), Math.round( 14 * density ), Math.round( 6 * density ) );
+        wrap.addView( pill, new FrameLayout.LayoutParams( MATCH_PARENT, WRAP_CONTENT ) );
+
+        final TextView label = new TextView( context );
+        SetupTextView( label );
+        label.setTextColor( color );
+        label.setText( item.text );
+        label.setDuplicateParentStateEnabled( true );
+
+        final int iconSize = Math.max( Math.round( 24 * density ), Math.round( label.getTextSize() * 1.1f ) );
+        final ImageView iconView = new ImageView( context );
+        if ( item.icon > 0 ) {
+            final Drawable dr = ContextCompat.getDrawable( context, item.icon );
+            if ( dr != null ) {
+                final Drawable d = dr.mutate();
+                d.setTint( iconColor );
+                iconView.setImageDrawable( d );
+            }
+        }
+        iconView.setScaleType( ImageView.ScaleType.FIT_CENTER );
+        final LinearLayout.LayoutParams ilp = new LinearLayout.LayoutParams( iconSize, iconSize );
+        ilp.setMarginEnd( Math.round( 12 * density ) );
+        if ( iconColumn )
+            pill.addView( iconView, ilp );
+
+        pill.addView( label, new LinearLayout.LayoutParams( 0, WRAP_CONTENT, 1 ) );
+
+        if ( item.mOpens ) {
+            final ImageView chevron = new ImageView( context );
+            chevron.setImageDrawable( MenuPills.chevron( context, color ) );
+            final LinearLayout.LayoutParams clp = new LinearLayout.LayoutParams( WRAP_CONTENT, WRAP_CONTENT );
+            clp.setMarginStart( Math.round( 8 * density ) );
+            pill.addView( chevron, clp );
+        }
+        return wrap;
     }
 
     public interface LoadTitleInterface {
@@ -156,8 +230,7 @@ public class MenuItem {
         final int iconSize = getIconSize(context);
         TextView textView = new TextView(context);
         SetupSmallTextView( textView );
-        final int textColor = Color.parseColor( Theme.GetTextColor() );
-        textView.setTextColor(textColor);
+        textView.setTextColor( MenuPills.accent() );
         textView.setText(title);
         textView.setGravity(Gravity.CENTER);
         final int pad = iconSize / 3;

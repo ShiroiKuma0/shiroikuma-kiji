@@ -415,28 +415,28 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             ArrayList<Integer> posList = new ArrayList<>();
 
                             final MenuItem[] items = {
-                                new MenuItem(R.string.context_menu_delete, R.drawable.delete, (_1, _2) ->
-                                    EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink) ),
+                                new MenuItem(R.string.context_menu_delete, R.drawable.ic_delete, (_1, _2) ->
+                                    EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink) ).destructive(),
 
                                 new MenuItem(R.string.menu_mark_upper_as_read, R.drawable.ic_arrow_drop_up, (_1, _2) -> {
                                     for (int i = 0; i < pos; i++)
                                         posList.add(i);
                                     ShowMarkPosListAsReadDialog(context, R.string.question_mark_upper_as_read, posList);
-                                } ),
+                                } ).mark(),
 
                                 new MenuItem(R.string.menu_mark_lower_as_read, R.drawable.arrow_drop_down, (_1, _2) -> {
                                     for (int i = pos + 1; i < getCount(); i++)
                                         posList.add(i);
                                     ShowMarkPosListAsReadDialog(context, R.string.question_mark_lower_as_read, posList);
-                                    }),
+                                    }).mark(),
 
                                 new MenuItem(R.string.menu_edit_labels, R.drawable.ic_label, (_1, _2) ->
-                                    LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this)),
+                                    LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this)).mark().opens(),
 
                                 new MenuItem(R.string.menu_share, R.drawable.ic_share, (_1, _2) ->
-                                        EntryView.share( getActivity(holder), Uri.parse(holder.entryLink), holder.titleTextView.getText().toString() )),
+                                        EntryView.share( getActivity(holder), Uri.parse(holder.entryLink), holder.titleTextView.getText().toString() )).share().opens(),
 
-                                new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(holder.entryLink) ),
+                                new MenuItem(R.string.open_link, R.drawable.ic_open_in_browser, GetShowInBrowserIntent(holder.entryLink) ).opens(),
 
                                 new MenuItem(R.string.add_entry_shortcut, R.drawable.ic_home, (_1, _2) -> {
                                     addArticleShortcut( getActivity(holder),

@@ -32,7 +32,6 @@ class LabelListActivity : AppCompatActivity(), Observer {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_label_list)
-        registerForContextMenu(findViewById(R.id.list_view))
 
         mListView = findViewById(R.id.list_view)
         mListView.adapter = object: ResourceCursorAdapter(
@@ -52,6 +51,18 @@ class LabelListActivity : AppCompatActivity(), Observer {
                 cursor.moveToPosition(position)
                 return Label(cursor)
             }
+        }
+
+        // 白い熊: the long-press menu as menu pills (black-yellow-theme skill), not the platform context menu
+        mListView.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, pos, _ ->
+            val label = mListView.adapter.getItem(pos) as Label
+            ru.yanus171.feedexfork.view.MenuItem.ShowMenu(arrayOf(
+                ru.yanus171.feedexfork.view.MenuItem(R.string.context_menu_edit, R.drawable.ic_edit, android.content.DialogInterface.OnClickListener { _, _ ->
+                    createLabelAddEditDialog(label).create().apply { show(); Theme.TintDialog(this) } }).opens(),
+                ru.yanus171.feedexfork.view.MenuItem(R.string.context_menu_delete, R.drawable.ic_delete, android.content.DialogInterface.OnClickListener { _, _ ->
+                    createLabelRemoveDialog(label).create().apply { show(); Theme.TintDialog(this) } }).destructive()
+            ), label.mName, this)
+            true
         }
 
         mListView.onItemClickListener  = AdapterView.OnItemClickListener { _, _, pos, _ -> createLabelAddEditDialog(mListView.adapter.getItem(pos) as Label).create().apply { show(); Theme.TintDialog(this) }
@@ -99,17 +110,6 @@ class LabelListActivity : AppCompatActivity(), Observer {
             null,
             if (IsLabelABCSort()) LabelColumns.NAME else LabelColumns.ORDER)
 
-
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        val info = item.menuInfo as AdapterContextMenuInfo
-        val label = mListView.adapter.getItem(info.position) as Label
-        when (item.itemId) {
-            MENU_EDIT -> createLabelAddEditDialog(label).create().apply { show(); Theme.TintDialog(this) }
-            MENU_REMOVE -> createLabelRemoveDialog(label).create().apply { show(); Theme.TintDialog(this) }
-        }
-        return super.onContextItemSelected(item)
-    }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun createLabelAddEditDialog(label_: Label?): AlertDialog.Builder {
@@ -184,12 +184,6 @@ class LabelListActivity : AppCompatActivity(), Observer {
                .setNegativeButton(android.R.string.cancel, null)
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
-        if (v == mListView) {
-            menu.add(Menu.NONE, MENU_EDIT, Menu.NONE, R.string.context_menu_edit)
-            menu.add(Menu.NONE, MENU_REMOVE, Menu.NONE, R.string.context_menu_delete)
-        }
-    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         mMenu = menu!!
         menu.clear() // This is needed to remove a bug on Android 4.0.3

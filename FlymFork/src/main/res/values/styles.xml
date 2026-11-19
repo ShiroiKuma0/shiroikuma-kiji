@@ -44,9 +44,9 @@
         <item name="colorControlNormal">@color/menu_pref_fg</item>
     </style>
     <style name="Widget.HandyRss.PopupMenu" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@color/menu_pref_bg</item>
+        <item name="android:popupBackground">@drawable/popup_menu_frame</item>
     </style>
     <style name="Widget.HandyRss.PopupMenu.Overflow" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:popupBackground">@color/menu_pref_bg</item>
+        <item name="android:popupBackground">@drawable/popup_menu_frame</item>
     </style>
 </resources>

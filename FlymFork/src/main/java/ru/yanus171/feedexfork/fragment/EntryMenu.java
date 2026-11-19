@@ -50,6 +50,10 @@ public class EntryMenu {
     }
 
     public static void updateMenuWithIcon(@NonNull final MenuItem item) {
+        // 白い熊: the menu rows draw the item's own icon inside their pill (PillMenuItemView), so the
+        // title no longer carries a second copy as an ImageSpan.
+        if ( true )
+            return;
         SpannableStringBuilder builder = new SpannableStringBuilder()
                 .append("*") // the * will be replaced with the icon via ImageSpan
                 .append("    ") // This extra space acts as padding. Adjust as you wish

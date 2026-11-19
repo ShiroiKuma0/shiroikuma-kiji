@@ -36,6 +36,8 @@
         <item name="colorControlNormal">@color/menu_pref_fg</item>
         <item name="colorControlActivated">@color/menu_pref_fg</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="popupMenuStyle">@style/Widget.HandyRss.PopupMenu</item>
+        <item name="actionOverflowMenuStyle">@style/Widget.HandyRss.PopupMenu.Overflow</item>
     </style>
     <style name="Theme.Dark.Pref" parent="Theme.Dark">
         <item name="android:windowBackground">@color/menu_pref_bg</item>
@@ -65,6 +67,8 @@
         <item name="colorControlNormal">@color/menu_pref_fg</item>
         <item name="colorControlActivated">@color/menu_pref_fg</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="popupMenuStyle">@style/Widget.HandyRss.PopupMenu</item>
+        <item name="actionOverflowMenuStyle">@style/Widget.HandyRss.PopupMenu.Overflow</item>
     </style>
 
     <style name="Theme.Black.Pref" parent="Theme.Black">
@@ -138,5 +142,7 @@
         <item name="colorControlActivated">@color/menu_pref_fg</item>
         <item name="android:navigationBarColor">@color/menu_pref_bg</item>
         <item name="actionBarTheme">@style/ThemeOverlay.HandyRss.Toolbar</item>
+        <item name="popupMenuStyle">@style/Widget.HandyRss.PopupMenu</item>
+        <item name="actionOverflowMenuStyle">@style/Widget.HandyRss.PopupMenu.Overflow</item>
     </style>
 </resources>

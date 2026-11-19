@@ -25,6 +25,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -70,6 +73,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mDecorView = getWindow().getDecorView();
         StartReadingServiceIfNeeded();
+    }
+
+    // 白い熊: every overflow row gets its icon (MenuPills), so PillMenuItemView can draw it as a pill
+    @Override
+    public boolean onPreparePanel( int featureId, @Nullable View view, @NonNull android.view.Menu menu ) {
+        final boolean result = super.onPreparePanel( featureId, view, menu );
+        ru.yanus171.feedexfork.view.MenuPills.decorate( this, menu );
+        return result;
     }
 
     public void applyOrientation() {

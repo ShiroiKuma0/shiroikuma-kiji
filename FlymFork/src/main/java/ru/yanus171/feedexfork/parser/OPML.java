@@ -1160,32 +1160,17 @@ public class OPML {
     public static void AskQuestionForImport(final Activity activity, final String fileName, final boolean isFileNameUri ) {
         Cursor cursor = getContext().getContentResolver().query( FeedData.FeedColumns.CONTENT_URI, null, _ID + "<>" + GetExtrenalLinkFeedID(), null, null );
         if ( cursor.moveToFirst() ) {
-            Theme.TintDialog( new AlertDialog.Builder( activity )
-                .setTitle( activity.getString( R.string.remove_existing_feeds_question ) )
-                .setItems(new CharSequence[]{
-                    activity.getString(R.string.yes),
-                    activity.getString(R.string.no),
-                    activity.getString(android.R.string.cancel),}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if ( i == 0 ) //yes
-                            Theme.TintDialog( new AlertDialog.Builder( activity )
-                                .setTitle( activity.getString( R.string.remove_existing_feeds_confirmation ) )
-                                .setPositiveButton(R.string.yes_I_realize_btn_caption, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        StartServiceForImport( fileName, true, isFileNameUri );
-                                    }
-                                })
-                                .setNegativeButton( R.string.sorry_I_was_wrong_btn_caption, null ).show() );
-
-                        else if ( i == 1  ) //no
-                            StartServiceForImport( fileName, false, isFileNameUri);
-                        dialogInterface.dismiss();
-                    }
-
-
-                }).show() );
+            // 白い熊: the three answers as menu pills; “Yes” removes the feeds, so it is the red one
+            ru.yanus171.feedexfork.view.MenuItem.ShowMenu( new ru.yanus171.feedexfork.view.MenuItem[] {
+                new ru.yanus171.feedexfork.view.MenuItem( R.string.yes, 0, (DialogInterface.OnClickListener) ( d, w ) ->
+                    Theme.TintDialog( new AlertDialog.Builder( activity )
+                        .setTitle( activity.getString( R.string.remove_existing_feeds_confirmation ) )
+                        .setPositiveButton(R.string.yes_I_realize_btn_caption, ( d2, w2 ) -> StartServiceForImport( fileName, true, isFileNameUri ) )
+                        .setNegativeButton( R.string.sorry_I_was_wrong_btn_caption, null ).show() ) ).destructive().opens(),
+                new ru.yanus171.feedexfork.view.MenuItem( R.string.no, 0, (DialogInterface.OnClickListener) ( d, w ) ->
+                    StartServiceForImport( fileName, false, isFileNameUri ) ),
+                new ru.yanus171.feedexfork.view.MenuItem( android.R.string.cancel, 0, (DialogInterface.OnClickListener) ( d, w ) -> { } ),
+            }, activity.getString( R.string.remove_existing_feeds_question ), activity );
         } else
             StartServiceForImport( fileName, false, isFileNameUri);
         cursor.close();
