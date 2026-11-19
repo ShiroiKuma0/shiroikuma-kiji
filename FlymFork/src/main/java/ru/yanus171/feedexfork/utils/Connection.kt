@@ -193,6 +193,15 @@ class Connection(url: String, var mIsOKHttp: Boolean = true) {
             mConnection!!.responseCode
     }
 
+    // 白い熊: throws when the server answered with an HTTP error (4xx/5xx), so callers never treat
+    // the error page's body as the content they asked for.
+    @Throws(IOException::class)
+    fun throwOnHttpError() {
+        val code = getCode()
+        if ( code >= 400 )
+            throw IOException( "HTTP $code" )
+    }
+
     fun IsOkHttp(): Boolean {
         return mIsOKHttp && Build.VERSION.SDK_INT >= 21
     }

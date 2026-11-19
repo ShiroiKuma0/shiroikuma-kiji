@@ -123,6 +123,8 @@ public class NetworkUtils {
                 // Compute the real URL (without "&eacute;", ...)
                 String realUrl = Html.fromHtml(imgUrl).toString();
                 imgURLConnection = new Connection( realUrl, OKHTTP );
+                // 白い熊: an HTTP error body (a bot wall's HTML page) must not be saved as the image.
+                imgURLConnection.throwOnHttpError();
 
                 long size = imgURLConnection.getContentLength();
                 int maxImageDownloadSize = PrefUtils.getImageMaxDownloadSizeInKb() * 1024;

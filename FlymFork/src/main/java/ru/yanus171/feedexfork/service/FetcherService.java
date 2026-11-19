@@ -810,6 +810,10 @@ public class FetcherService extends IntentService {
                             final String contentIndicator = getContentIndicator(entryCursor, abstractHtmlPos);
                             try {
                                 connection = new Connection(linkToLoad, OKHTTP);
+                                // 白い熊: a bot wall (e.g. DataDome on mmaweekly.com) answers 403 with a
+                                // "Please enable JS" page; never save an HTTP error page as the article —
+                                // fail instead, so the entry keeps the feed's own text.
+                                connection.throwOnHttpError();
                                 Status().ChangeProgress(R.string.extractContent);
 
                                 if (isCancelRefresh())
@@ -824,6 +828,7 @@ public class FetcherService extends IntentService {
                                             link = s.replaceFirst("\\d+;URL=", "");
                                             connection.disconnect();
                                             connection = new Connection(link, OKHTTP);
+                                            connection.throwOnHttpError();
                                             doc = Jsoup.parse(connection.getInputStream(), null, "");
                                         }
                                         break;
