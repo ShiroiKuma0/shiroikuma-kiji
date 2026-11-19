@@ -9,7 +9,7 @@ A personal, rebranded Android RSS reader — a fork of
 > The new package id installs as a new app; move your feeds, articles and settings across with the
 > Export/Import panel — backups written under the old name import unchanged.
 
-**Latest release:** [`1.1.35+015`](../../releases/latest) · arm64 (universal) · Android 4.0+ · F-Droid flavor (no GMS).
+**Latest release:** [`1.1.35+032`](../../releases/latest) · arm64 (universal) · Android 4.0+ · F-Droid flavor (no GMS).
 
 ## What this fork adds on top of Handy News Reader
 
@@ -28,6 +28,11 @@ A personal, rebranded Android RSS reader — a fork of
   bundled fonts or your own font files.
 - **Black / yellow chrome theme** — a high-contrast dark theme applied to every surface (window, toolbar,
   drawer, menus, dialogs, action icons), with user-customizable chrome and article-content colors.
+- **Menus you can read at a glance** — every action row of the ⋮ overflow, its submenus and the
+  long-press menus (link, image, article, label) is an outlined pill with its icon inside, coloured by
+  what it does: green to load or reload, blue to mark, star or label, orange to share or export,
+  magenta to disable or close, and the whole row red when it deletes. Rows that open something end
+  in ›, and toggles carry an outlined switch instead of a checkbox. Every colour is settable.
 - **白い熊 記事 UI screen** — one consolidated screen for all fonts & colors, styled with text-wide
   underlined headings and thin section separators, reachable instantly by long-pressing the drawer's
   settings icon, the top-left home icon, or the article list's top-right ⋮ button.
@@ -43,12 +48,12 @@ A personal, rebranded Android RSS reader — a fork of
   list, auto-refresh, options — and its filters and articles follow, deduplicated, with read and
   starred state joined as a union that never undoes anything read on the phone. Stock skips any feed
   it already has, silently dropping its settings and every article under it.
-- **Export / Import by category** — the UI screen's first section: one shared export folder (last
+- **Export / Import by category** — the UI screen's first section: one shared export directory (last
   export shown live) and a panel of category checkboxes behind round pill buttons. Every export is
   written to a `.part` file and renamed only once it is whole, so an interrupted backup never leaves
   a half-written archive that looks like a real one.
 - **Headless automation backup** — an intent lets a companion automation app trigger the
-  same export with no UI, pick the categories, choose the destination folder, and read back the
+  same export with no UI, pick the categories, choose the destination directory, and read back the
   written path and size. It reports live progress in real counts — naming the category it is on,
   the files and articles done, and the bytes written — never goes quiet for long enough to look
   dead, and can be **cancelled from outside** mid-export, cleanly and without a trace. **On by
@@ -67,10 +72,10 @@ A personal, rebranded Android RSS reader — a fork of
   images and article files that went with it, and the periodic cleanup no longer waits for the phone
   to be on a charger. Upstream leaves both behind indefinitely.
 - **Thunderbird-compatible feed export** — your categories and feeds go out as OPML (`feeds.opml`
-  inside the backup ZIP) that imports into **Mozilla Thunderbird** as folders, each with the
+  inside the backup ZIP) that imports into **Mozilla Thunderbird** as folders (Thunderbird’s own word), each with the
   individual feeds inside, readable separately.
 - **Scheduled auto-backup** — periodic full backup (feeds, starred articles, filters, labels, settings)
-  to a folder of your choice, on a configurable interval.
+  to a directory of your choice, on a configurable interval.
 - **Quick-control toolbars** — adjust text size, title size, and body font in the reading view, or
   the whole grid layout from one dialog, on the fly; star/unstar an article with one tap from
   the always-visible ★ in the reading toolbar.
@@ -78,7 +83,11 @@ A personal, rebranded Android RSS reader — a fork of
   the pay-or-consent wall (fetched with a Googlebot user agent).
 - **Cleaner full text** — the lead paragraph that news sites keep in the article header (aktualne.cz,
   lidovky.cz, …) is brought back to the top of the article, Mafra’s in-article ad boxes are dropped,
-  and embedded videos fit the screen width.
+  embedded videos fit the screen width, and per-site clean-ups strip respekt.cz’s and echo24.cz’s
+  ads, paywall boxes and related-article grids (keeping echo24’s photo caption and author). A page
+  behind a bot wall is never saved as the article, feeds that carry their picture only in
+  `media:thumbnail`, `media:content` or an image enclosure get it, and a per-feed **Request pictures
+  as JPEG** switch fetches huge PNG pictures (Deník N) as small JPEGs so they download.
 - **Tracks upstream** — regularly rebased onto the latest Handy News Reader development, taking
   untagged `master` bumps too rather than waiting for a release. Currently on **`1.1.35`** (untagged
   master), which brings one shared HTTP connection for all feeds, refreshes that can no longer stall,

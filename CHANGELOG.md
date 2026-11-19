@@ -9,6 +9,55 @@ Each fork release names the upstream release it is built on. The build counter i
 
 ---
 
+## 白い熊 記事 1.1.35+032 — 2026-11-19
+
+Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
+(`1.1.35+016`–`+031` were test builds; everything in them is included here.)
+
+### Menus
+
+- **Every menu in the black-yellow pill look.** Each action row of the toolbar ⋮ overflow, its
+  submenus and the app’s own menus — the link and image menus in the reading view, the article
+  long-press menu, the label menu and the OPML import question — is an outlined pill spanning the
+  menu, with its icon inside at the left. A row that opens something (a submenu, a dialog, a screen)
+  ends in ›. Delete rows are red throughout. Checkable rows stay plain and carry the outlined switch
+  instead of a checkbox. Groups are split by a clear inset line, and the menu panel has a thin yellow
+  frame.
+- **Icons coloured by what the row does**, each a settable colour under the chrome colours: load,
+  reload and refresh green; mark, star and labels blue; share, copy and export orange; disable,
+  cancel and close magenta; delete red. Rows that had no icon (show log, filter by labels, reload all
+  texts, unstar, send report, …) got one.
+- The icon is no longer drawn twice (the upstream icon in the title is switched off), and a large
+  bitmap icon can no longer push the label out of its row.
+
+### Feeds and pictures
+
+- **Pictures from `media:thumbnail`, `media:content` and image enclosures.** The feed parser strips
+  namespace prefixes, so these were never recognised and feeds that carry their picture only there
+  (MMA Weekly, Respekt) got no image or thumbnail. The feed’s picture is used only when the item’s
+  text has none, so it never appears twice.
+- **New per-feed switch “Request pictures as JPEG”** (Edit feed). Image servers that take the format
+  in the address (`fm=png`) are asked for JPEG instead — Deník N’s 3 MB PNG pictures were above the
+  download limit, so its articles had no thumbnail.
+- **A bot wall’s error page is never saved.** When a site answers with an HTTP error (DataDome’s
+  “Please enable JS” page on mmaweekly.com), the full-text download and the image download fail
+  instead of storing that page as the article or as an image; the article keeps the feed’s own text.
+
+### Article text
+
+- **echo24.cz:** the related-article card and the e-shop banner are removed, and the photo caption
+  (often a pull quote) and the author line, which sat outside the extracted text, are brought in.
+- **respekt.cz:** the ad slots, the subscription box, the “Mohlo by vás zajímat” and section grids
+  with their “Načíst další články” button, the “Chcete nás vidět v Google nahoře?” box and the
+  print-only second copy of every picture are removed.
+- **rlsbb.to:** the theme’s “P2P” badge no longer becomes the article’s main image.
+- **The page’s main picture is not added twice** when the article already shows it under a slightly
+  different address (another size query, `&amp;` escaping, or no scheme).
+
+Articles whose full text was downloaded earlier pick these up with “Reload full text”.
+
+---
+
 ## 白い熊 記事 1.1.35+015 — 2026-11-12
 
 Built on upstream **`1.1.35`** (versionCode 372), the untagged `upstream/master` tip `3611801b`.
